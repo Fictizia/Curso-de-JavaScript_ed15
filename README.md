@@ -23,7 +23,28 @@ Frontend Developer en Viajes el Corte Inglés donde desarrolla aplicaciones que 
 ## Contenidos
 
 - [Introducción a JavaScript](./intro-to-js.md#introducción-a-javascript)
+
   - [JS: Nombres, versiones y modos:](./intro-to-js.md#js-nombres-versiones-y-modos)
   - [Explorando JS](./intro-to-js.md#explorando-js)
   - [Hello World](./intro-to-js.md#hello-world)
   - [Un poco de JS](./intro-to-js.md#un-poco-de-js)
+
+- [GIT Practico](./practical-git.md#git-practico)
+
+  - [Instalar GIT](./practical-git.md#instalar-git)
+  - [Comandos básicos explicados](./practical-git.md#comandos-básicos-explicados)
+    - [Inicialización de un repositorio](./practical-git.md#inicialización-de-un-repositorio)
+    - [Clonando un repositorio](./practical-git.md#clonando-un-repositorio)
+    - [Añadir y comitear](./practical-git.md#añadir-y-comitear)
+    - [Enviando los cambios y añadiendo un remoto](./practical-git.md#enviando-los-cambios-y-añadiendo-un-remoto)
+    - [Creando ramas](./practical-git.md#creando-ramas)
+    - [Actualizacion y union (update & merge)](./practical-git.md#actualizacion-y-union-update--merge)
+    - [Tagging](./practical-git.md#tagging)
+    - [Reemplazando cambios locales](./practical-git.md#reemplazando-cambios-locales)
+  - [Flujo de trabajo Github](./practical-git.md#flujo-de-trabajo-github)
+    - [Creación de una rama](./practical-git.md#creación-de-una-rama)
+    - [Añadiendo commits](./practical-git.md#añadiendo-commits)
+    - [Abrir una Pull Request](./practical-git.md#abrir-una-pull-request)
+    - [Discussion y revisión del código](./practical-git.md#discussion-y-revisión-del-código)
+    - [Despliegue](./practical-git.md#despliegue)
+    - [Mergeando](./practical-git.md#mergeando)
