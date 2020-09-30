@@ -48,3 +48,13 @@ Frontend Developer en Viajes el Corte Inglés donde desarrolla aplicaciones que 
     - [Discussion y revisión del código](./practical-git.md#discussion-y-revisión-del-código)
     - [Despliegue](./practical-git.md#despliegue)
     - [Mergeando](./practical-git.md#mergeando)
+
+- [Reglas Léxicas de JavaScript](./lexical_rules.md#reglas-léxicas-de-javascript)
+
+  - [Texto escrito](./lexical_rules.md#texto-escrito)
+  - [Comentarios](./lexical_rules.md#comentarios)
+  - [Literales](./lexical_rules.md#literales)
+  - [Identificadores y palabras reservadas](./lexical_rules.md#identificadores-y-palabras-reservadas)
+    - [Palabras reservadas](./lexical_rules.md#palabras-reservadas)
+  - [Codificación: Unicode](./lexical_rules.md#codificación-unicode)
+  - [Semicolons](./lexical_rules.md#semicolons)
