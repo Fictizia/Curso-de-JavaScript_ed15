@@ -21,4 +21,4 @@ str.includes("World"); //booleano
 str.replace("llo", "ya"); //cambia el llo por ya
 str.trim(); //elimina espacios en blanco
 
-//TEMPLATE STRINGS
+//Para ausencia de valor utilizar null
