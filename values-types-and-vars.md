@@ -249,6 +249,33 @@ Por ejemplo:
 
 ```
 
+A la hora de escapar caraceteres podemos usar no solo el caracter `\` sino tambien una secuencia de tres, que permite ser usada para escapar cualquier caracter Unicode o un numero hexadecimal.
+
+| Secuencia | Representación                                                   |
+| --------- | ---------------------------------------------------------------- |
+| \0        | NUL                                                              |
+| \b        | Backspace                                                        |
+| \t        | Tab Horizontal                                                   |
+| \n        | Nueva linea                                                      |
+| \v        | Tab Vertical                                                     |
+| \f        | Form feed                                                        |
+| \r        | Retorno de carro                                                 |
+| \"        | Comillas dobles                                                  |
+| \'        | Comillas simples                                                 |
+| \\        | Backslash                                                        |
+| \xnn      | Un caracter Unicode especificado en dos digitos hexadecimales    |
+| \xnnnn    | Un caracter Unicode especificado en cuatro digitos hexadecimales |
+| \u{n}     | Un caracter Unicode especificado por su codigo                   |
+
+Si el caracter `\` precede a cualquier otro caracter que no sea de los anteriores, simplemente es ignorado.
+
+```js
+"\#";
+// es lo mismo que
+"#";
+
+```
+
 ### Trabajando con strings
 
 Una de las características de JS es su abilidad para concatenar strings. Si usamos el operador `+` con numeros los sumamos. Pero si lo hacemos con strings, los unimos.
@@ -309,6 +336,10 @@ s.charAt(s.length - 1); // => d: el ultimo caracter
 " test ".trim(); // => "test": elimina los espacions en blanco
 " test ".trimStart(); // => "test ": elimina los espacions en blanco al inicio
 " test ".trimEnd(); // => " test": elimina los espacions en blanco al final
+
+// Otros
+s.concat("!"); // => "Hello, world!"
+"*".repeat(5); // => "*****": repite n copias
 ```
 
 Recuerda que **los strings son inmutables en JS**. Metodos como `replace()` o `toUpperCase()` devuelven un nuevo string, no modifican el original. Para que lo entendamos mejor, los strings debes pensar en ellos como arrays de caracteres.
@@ -318,3 +349,434 @@ const s = "hello";
 s[0]; // h
 s[0] = "i"; // ERROR!
 ```
+
+### Template strings
+
+En ES6 podemos definir literales de strings con backtips:
+
+```js
+const str = `soy un template string`;
+```
+
+Ofrecen características que la construcción de strings con comillas simples o dobles no ofrecen, por ejemplo podemos incluir expresiones de JS dentro de ellos. El valor final del template string es calculado evaluando cualquier expresión incluida, convirtiendo los valores de dichas expresiones en strings y combinando dichos strings con los caracteres literales que esten dentro de los backtips:
+
+```js
+const name = "Iván";
+const greeting = `Hello ${name}.`; // "Hello Iván."
+```
+
+Todo lo que se encuentre dentro de `${expresión}` es interpretado como una expresión JS. Todo lo que se encuentra fuera de las llaves como un string de texto literal. La expresión dentro de las llaves es evaluada y luego convertida a string para posteriormente ser insertada en el template, reemplazando el signo de `$` y las llaves `{}` y todo lo que tenga dentro.
+
+No hay limites en el numero de expresiones que podemos interpolar en un template string. Y pueden usar cualquier caracter de escape que el resto de los strings usan, ademas pueden abrir nuevas lineas sin niguna secuencia de escape requerida.
+
+```js
+/*
+  4 expresiones
+  4 lineas
+*/
+
+const errorMessage = `\
+\u2718 Test failure at ${filename}:${linenumber}:
+${error.message}
+Stack trace:
+${error.stack}
+`;
+```
+
+#### Tagged template string
+
+Una funcionalidad poderosa y poco usada de los template strings es que, si el nombre de una función (el "tag") antecede a la apertura de un backtick, entonces el teto y los valores de las expresiones del template string son pasados como argumentos de dicha función. Lo cual es util para construir HTML, escapar sentencias SQL etc.
+
+```js
+fn`Hello ${you}! You're looking ${adjective} today!`;
+
+// desazucarando...
+
+fn(["Hello ", "! You're looking ", " today!"], you, adjective);
+```
+
+### Coincidencia de patrones
+
+JS define un tipo de dato conocido como expresiones regulares, `RegExp`, para describir y encontrar patrones en strings de texto. `RegExp` no es un tipo fundamental en JS, pero tienen un literal de sintaxis como los numeros o los strings, asique como si lo fueran ;D.
+
+La gramatica de escribir una expresión regular es compleja y la api que las define complicada.
+El texto encerrado entre un par de `/` constituye el literal de una expresión regular:
+
+```js
+/^FOO/; // Busca coincidencias de las letras F O O desde el inicio del string
+/[1-9][0-9]*/; // Busca cualquier digito que no sea 0, seguido de cualquier numero de digitos
+/\bjavascript\b/i; // Busca "javascript" como palabra, sin distinguir mayusculas de minusculas
+```
+
+Los objetos `RegExp` exponen una API con metodo utiles, los strings tambien tienen algunos metodos que aceptan `RegExp` en sus argumentos:
+
+```js
+let text = "testeando: 1, 2, 3"; // donde vamos a buscar
+let pattern = /\d+/g; // Coincidencia de cualquier instancia de uno o mas digitos
+pattern.test(text); // => true: existe coincidencia
+text.search(pattern); // => 11: posicion de la primera coincidencia
+text.match(pattern); // => ["1", "2", "3"]: array de todas las coincidencias
+text.replace(pattern, "*"); // => "testeando: *, *, *"
+text.split(/\D+/); // => ["", "1", "2", "3"]: split sobre lo que no es un digito
+```
+
+_Nota: puede ser util visitar la siguiente web para probar regexp https://regex101.com/_
+
+## Booleanos
+
+Un booleano representa verdad o falsedad, activado o desactivado, si o no. Solo existen dos posibles valores en este tipo:
+`true` o `false`.
+
+Los valores booleanos normalmente son el resultado de una comparación realizada en tu código JS.
+
+```js
+myVar === 5;
+
+/*
+  Este codigo comprueba si el valor de la variable "myVar" es igual al numero 4. 
+  Si el resultado de dicha comparación es cierto, el valor de la comparación es "true", si no es "false".
+*/
+```
+
+Los valores booleanos son usados normalmente en JS como estructuras de control. Por ejemplo, el estamento `if` en JS realiza una acción si el valor booleano es `true` y otra si es `false`. Normalmente combinamos comparaciones con estamentos.
+
+```js
+if (myVar === 4) {
+  myVar2++; // si el valor de "myVar" es igual a 4 entonces incrementa "myVar2"
+} else {
+  myVar--; // sino decrementa "myVar"
+}
+```
+
+Cualquier valor en JS puede ser convertido a un valor booleano.
+Los siguientes valores son convierten y funcionan como `false`:
+
+```js
+undefined;
+null;
+0 - 0;
+NaN;
+(""); // string vacio
+```
+
+El resto de valores, incluidos los objetos y arrays, convierten y funcionan como `true`. `false` y los 6 valores que convierten a el, son aveces llamados valores falsos (`falsy`) y el resto verdaderos (`truthy`). Cunado JS espera un valor booleano los valores falsos actual como `false` y los verdaderos como `true`.
+
+Por ejemplo, suponiendo una variable `a` que guarda un objeto o el valor `null`. Puedes testear explicitamente para ver si es o no es `null` con el estamento `if`:
+
+_Nota: Recuerda, solo usaremos `!=` para comparar contra null y undefined_
+
+```js
+if (a != null) {
+  // ...
+}
+```
+
+El operador de inegualdad comparar `a` con null y evalua hacia `true` o `false`.
+
+_Nota: aunque veras en algunos sitios que se puede omitir la comparación y confiar en el hecho de que `null` es falso y un objeto verdadero, se considera una mala práctica. Mejor explicitos que implicitos ;D_
+
+```js
+// ESTO ES UNA MALA PRACTICA
+if (a) {
+  // ...
+}
+```
+
+En el primer ejemplo, el cuerpo del estamento `if` es ejecutado si y solo si `a` no es `null` o `undefined`. En el segundo ejemplo será ejecutado si `a` no es `false` o cualquier valor falso (como `null` o `undefined`). Con lo cual el segundo estamento va a depender de más valores, los 6 que pueden convertir a `false`, y tenemos que tener más cuidado de que almacenamos en `a`. **MEJOR SER EXPLICITOS**
+
+Los valores booleanos tienen un metodo `toString()` que se pueden usar para convertirlos en los strings `"true"` y `"false"`, pero no tienen ningun otro metodo util. Aparte de su API, hay 3 operadores booleanos importantes.
+
+- El operador `&&` realiza la operacion booleana `AND`.
+  - Evaluando a un valor verdadero si y solo si ambos operandos son verdaderos, sino evalua a falso.
+- El operador `||` realiza la operacion booleana `OR`.
+  - Evaluando a un valor verdadero si uno de los dos (o ambos) operando son verdaderos, sino evalua a falso si ambos operadores son falsos.
+- El operador unario `!` realiza la operación booleana `NOT`.
+  - Evaluando a `true` si su operando es falso y evaluando a `false` si su operando es verdadero.
+
+```js
+if ((x === 0 && y === 0) || !(z === 0)) {
+  // "x" e "y" ambos valores son cero o "z" no es cero
+}
+```
+
+## null y undefined
+
+`null` es una palabra reservada que evalua a un valor especial, suele indicar ausencia de valor. Si usamos el operador `typeof` sobre `null` este retorna `"object"`, lo cual indica que `null` es un objeto especial que indica "ausencia de objeto". Técnicamente `null` es considerado el unico miembro de su tipo y puede ser para indicar que no existe valor para numeros, strings u objetos.
+
+JS tiene otro objeto que indica ausencia de valor: `undefined`. `undefined` representa un tipo de ausencia más profundo. Es el valor de variables que no han sido inicializadas o el valor que recibes cuando al consultar sobre la propiedad de un objeto o un elemento de un array este no existe. `undefined` tambien es el valor que retorna una función que explicitamenta no retorna valor y es el valor de los argumentos de una función que carece de ellos. `undefined` es una constante global predefinida, no una palabra reservada como `null`, inicializada al valor `undefined`. Si aplicamos el operador `typeof` sobre `undefined`, este retorna `"undefined"` lo cual indica que tambien es miembro unico de su tipo.
+
+A pesar de las diferencias entre `null` y `undefined` ambos indican ausencia de valor y suelen usarse de manera intercambiable. _Nota: casi siempre es mejor usar null, ya que es conocido por todos los programadores de diferentes lenguajes_.
+
+Con ellos es recomendable trabajar con el operador de igualdad `==` para cubrir ambos, pero para distinguirlos explicitamente usaremos el comparador de igualdad estricta `===`.
+
+```js
+null == undefined; // => true
+null === undefined; // false
+```
+
+Ambos son valores falsos, es decir se comportan como `false` cuando un valor booleano es requerido. Ni `null` ni `undefined` tienen metodos o propiedades asociadas.
+
+## Symbol
+
+Los símbolos fueron introducidos en ES6 para servir como propiedades que no son strings. Para entenderlos hay que comprender que los objetos fundamentales de JS son una coleccion no ordenada de propiedades, cada propiedad tiene un nombre y un valor. Las propiedades son normalmente sdtrings. Pero con los simbolos, estos pueden actuar como tal.
+
+```js
+const strname = "string name"; // un string para usar como nombre de propiedad
+const symbolname = Symbol("prop name"); // un Symbol para usar como nombre de propiedad
+typeof strname; // => "string"
+typeof symbolname; // => "symbol"
+const obj = {}; // creamos un objeto
+o[strname] = 1; // definimos una propiedad con el nombre basado en strings y le damos un valor
+o[symbolname] = 2; // definimos una propiedad con el nombre basado en simbolos y le damos un valor
+o[strname]; // => 1: accedemos a la propiedad basada en nombre
+o[symbolname]; // => 2: accedemos a la propiedad basada en simbolo
+```
+
+`Symbol` no tiene un literal en la sintaxis JS. Para obtener el valor de un simbolo, llamamos a la función `Symbol()`. Esta función no retorna el mismo valor dos veces, incluso si la pasamos como el mismo argumento. Esto significa que si llamas a `Symbol()`para obtener un valor, puedes estar seguro de que al usarlo para añadir una propiedad a un objeto no estaras sobreescribiendo ninguna propiedad con el mismo nombre. De la misma manera, si usamos propiedades simbolicas y no compartimos los simbolos que la definen, puedes estar seguro de que otros modulos en tu programa no van a poder borrar las propiedades por un descuido en su programación.
+
+Tecnicamente los simbolos sirven como un mecanismo de extension del lenguaje. Cuando ES6 introdujo el loop `for/of` y los objetos iterables, era necesario definir un metodo estandar que las clases pudieran implementar por si mismas para hacerse iterables. Pero estandarizar cualquier nombre de propiedad como un string podria haber roto codigo ya existente, por eso se uso un nombre simbolico en vez de un string. `Symbol.iterator` es un valor de `Symbol` que puede ser usado como el nombre de un metodo para hacer un objeto iterable.
+
+La funcion `Symbol()` toma un string de manera opcional en su argumento, y retorna un valor de `Symbol` unico. Si le damos dicho argumento, el string sera incluido en el output del metodo `toString()` de dicho simbolo. Pero recuerda que llamar al metodo `Symbol()` con el mismo string varias veces produce valores de `Symbol` diferentes.
+
+```js
+const sym = Symbol("foo");
+sym.toString(); // => "Symbol("foo")"
+```
+
+El metodo `toString()` es el unico metodo interesante de las instancias de un `Symbol`. Existen otras dos metodos a conocer. Normalmente cuando usamos simbolos, es porque queremos mantenerlos privados en una zona de nuestro codigo, de tal manera que nuestras propiedades definidas con ellos nunca entren en conflicto con codigo ya existente. Otras veces, podemos definir un valor basado en `Symbol` y compartirlo de manera mñas extensa con otras partes del código. Por ejemplo si estamos definiendo una extension en la que quieres que participe otras partes del codigo.
+
+Para este ultimo caso, JS define un registro de simbolos globales. La funcion `Symbol.for()` toma un string en su argumento y retorna un simbolo que es asociado con el string que has pasado. Si no existe un `Symbol` ya asociado a dicho string, entonces uno nueo es creado y retornado.
+
+El string pasado a la funcion `Symbol.for()` tambien aparece como output del metodo `toString()` del simbolo retornado y puede ser obtenido mediante llamar al metodo `Symbol.keyFor()` del simbolo retornado.
+
+```js
+const s = Symbol.for("shared");
+const t = Symbol.for("shared");
+
+s === t; // => true
+s.toString(); // => "Symbol(shared)"
+Symbol.keyFor(t); // => "shared"
+```
+
+## El objeto global
+
+El objeto global, es un objeto fundamental de JS que sirve para un proposito importante: sus propiedades sirven como identificadores globales que estan disponibles en un programa de JS. Cuando el interprete de JS se lanza en Node, o cuando un navegador carga una nueva pagina, estos crean un nuevo objeto global y le dan una coleccion de propiedades que definen:
+
+- Constantes globales como `undefined`, `Infinity` o `NaN`.
+- Funciones globales como `isNaN()`, `parseInt()` o `eval()`.
+- Funciones constructoras como `Date()`, `String()`, `Object()` o `Array()`.
+- Objetos globales como `Math` o `JSON`.
+
+Las propiedeades iniciales del objeto global no son palabras reervadas, pero deben tratarse como si lo fueran.
+
+En Node, el objeto global tiene una propiedad llamada `global` cuyo valor es el objeto global en si mismo, pudiendo referirte a el en tu programa escrito para Node con el nombre `global`.
+
+En los navegadores, `window` sirve como objeto global quera todo el codigo JS contenido en la ventana de dicho navegador. Este objeto global se referencia a si mismo con la palabra `window` y define el core de las propiedades globales, pero tambien algunas propiedades especificas de cada navegador o del lado del cliente de JS.
+
+Los web workers, definen otro objeto global diferente a `window`, y puede referenciarse con el objeto global `self`.
+
+ES2020 define `globalThis` como la manera estandar de definir un objeto global independientemente del contexto y ya esta implementada por casi todos los navegadores actuales y Node.
+
+## Valores primitivos inmutables - Referencias a objetos mutables
+
+Hay una diferencia basica en JS entre los valores primitivos (`undefined`, `null`, booleanos, numeros y strings) y los objetos (`arrays` y `function` incluidos). Los primitivos son inmutables: no hay manera de cambiar el valor de un primitivo. Esto tiene mucho sentido para los booleanos o los numeros, carece de sentido cambiar el valor de un numero, pero no tanto para los strings. Los strings son _como_ arrays de caracteres, por lo que parece esperable ser capaz de alterar un caracter en un index específico. Pero JS no permite este comportamiento, de hecho todos los metodos que parecen alterar un string en realidad devuelven un valor nuevo.
+
+```js
+const s = "foo";
+s.toUpperCase(); // "FOO" sin alterar s
+s; // => "foo": el valor original de s no ha sido alterado
+```
+
+Los primitivos ademas son comparados por valor: dos valores son el mismo solo si tienen el mismo valor. Suena redundante para numeros, booleanos, `null` y `undefined`, ya que no hay otra manera de compararlos. Pero nuevamente esto no es tan obvio en el caso de los strings. Si dos valores distintos de strings son comparados, JS los trata igual si y solo si tienen la misma longitud y el caracter de cada index es el mismo.
+
+Los objetos se comportan de manera diferente a los primitivos. Primero porque son mutables, su valor puede cambiar:
+
+```js
+const obj = { x: 1 };
+obj.x = 2; // mutacion de la propiedad x cambiando su valor
+obj.y = 3; // se añade una nueva propiedad al objeto
+
+const arr = [1, 2, 3];
+a[0] = 0; // cambio en el valor de un elemento del array
+a[3] = 4; // se añade un nuevo elemento al array
+```
+
+Los objetos no son comparados por valor: dos objetos no son iguales aunque tengan las mismas propiedades y valores. Y dos arrays no son iguales aunque tengan los mismos elementos en el mismo orden:
+
+```js
+const objA = { x: 1 };
+const objB = { x: 1 };
+
+objA === objB; // => false
+
+const arrA = [];
+const arrB = [];
+
+arrA === arrB; // false
+```
+
+Los objetos son comumente llamados _tipos referenciales_ para distinguirlos de los _tipos primitivos_. Haciendo una analogia, los valores objetos son referencias y podemos decir que los objetos son comparados por referencia: dos valores objeto son iguales si y solo si referencias el mismo objeto subyacente.
+
+```js
+const arrA = [];
+const arrB = arrA; // arrB referencia al mismo array
+
+arrB[0] = 1; // mutamos el array referenciado por la constante arrB
+arrA[0]; // => 1: el cambio es visible en la variable arrA
+arrA === arrB; // => true: arrA y arrB referencian el mismo objeto, entonces son iguales
+```
+
+Asignar un objeto, o array, a una variable simplemente asigna la referencia: no creas una nueva copia del objeto. Si deseas crear una nueva copia del objeto o array, debes copiar explicitamente sus propiedades. Por ejemplo:
+
+```js
+const arrA = [1, 2, 3, 4];
+const arrB = [];
+
+for (let i = 0; i < arrA.length; i++) {
+  // por cada index de arrA[]
+  arrB[i] = arrA[i]; // copiamos el elemento en arrB
+}
+
+// ES6 define una forma más sencilla de hacer lo mismo
+const arrC = Array.from(arrA);
+```
+
+De la misma forma si queremos comprar dos objetos distintos o dos arrays distintos, debemos compararlos por sus propiedades o elementos:
+
+```js
+// nuestro modulo arrays.js
+const isEqual = (a, b) => {
+  if (a === b) {
+    // los arrays son iguales por referencia?
+    return true;
+  }
+
+  if (a.length !== b.length) {
+    // tienen la misma longitud?
+    return false;
+  }
+
+  for (let i = 0; i < a.length; i++) {
+    // recorriendo sus elementos...
+    if (a[i] !== b[i]) {
+      // son identicos?
+      return false;
+    }
+  }
+
+  return true; // entonces son iguales
+};
+```
+
+## Conversión de tipos
+
+TODO: IMPLEMENTAR
+
+## Declaraciones de variables y asignaciones
+
+Una de las tecícas fundamentales al programar es el uso de nombres o identificadores para representar valores. Asignar un nombre a un valor nos da la oportunidad de referirnos a dicho valor en el programa que escribimos. Cuando lo hacemos, normalmente decimso que asignamos un valor a una _variable_. El termino variable, implica que nuevos valores pueden ser asignados: es decir que el valor asociado a dicha variable puede variar en tiempo de ejecución. Si asignamos permanentemente un valor a un nombre, entonces lo llamamos constante, no variable.
+
+Antes de poder usas variables o constantes en JS, debemos declararlas. En ES6 en adelante esto se hace mediante el uso de `let` y `const`. Antes de ES6 usabamos `var` que tiene su propia idiosincracia..
+
+### Declarando con let y const
+
+En un JS moderno, las variables son declaradas con `let`:
+
+```js
+let i;
+let sum;
+```
+
+Tambien podemos declarar varias variables en un solo estamento `let`:
+
+```js
+let i, sum;
+```
+
+Es una buena practica en programación asignar un valor inicial a una variable al declararla, siempre que sea posible:
+
+```js
+let message = "hola";
+let i = 0,
+  j = 1,
+  k = 2;
+let x = 3,
+  y = x * x; // la inicializacion puede usar variables declaradas previamente
+```
+
+Si no especificamos un valor iniciar para una variable en el estamento `let`, entonces la variables declarada, pero su valor es `undefined` hasta que tu codigo le asigne un valor.
+
+Para declarar una constante en vez de una variable, usamos `const` en vez de `let`. `const` function igual que `let`a excepcion que debes inicializar la constante cuando la declaras.
+
+```js
+const H0 = 74;
+const GREETING = `Saludos desde ${region}`;
+```
+
+Como su nombre implica, las constantes no pueden ser reasignadas, cualquier intento de realizarlo lanzara un `TypeError`.
+
+_Nota: Es una practica comun, declarar las constantes en mayusculas para distinguirlas de variables._
+_Nota: contar escuelas de pensamiento_
+
+En los loops (`for`, `for/in`, `for/of`) se incluye una variable que obtiene un nuevo valor en cada iteracion del loop. JS nos permite declarar la variable del loop como parte de su sintaxis, es otra forma comun de usar `let`:
+
+```js
+for (let i = 0; len = data.length; i < len; i++) console.log(data[i]);
+for (let datum of data) console.log(datum);
+for (let prop in obj) console.log(prop);
+```
+
+Puede parecer raro, pero tambien podemos usar `const` para declarar las variables de un loop `for/in` o `for/of` siempre que el cuerpo del loop no reasigne la variable a un nuevo valor, es decir, permanezca constante.
+
+#### Scope de variables y constantes
+
+El scope de una variable es una region del codigo de tu programa donde esta ha sido definida. Variables y constantes declaradas con `let` y `const` tienen un scope de bloque. Esto significa que solo son definidas en un bloque de codigo en el cual los estamendos de `let` o `const` aparecen. A grandes rasgos, si una variable o constante es declarada entre un set de llaves, entonces esas llaves delimitan la region del codigo en el cual la variable o constante definidas pueden ser referenciadas. _Tampoco es legal hacer referencia a una variable antes de ser declarada_
+
+Cuando una declaración aparece a un nivel superior, fuera de un bloque de codigo, decimos que son variables o constantes globales, su scope es global. Los modulos JS, en Node o el navegador, sus variables globales son el archivo en el que estan definidas. En el navegador tradicionalmente cualquier variable definida en una etiqueta `<script>` esta disponible a cualquier elemento `<script>` del documento HTML.
+
+#### Declaraciones repetidas
+
+Es un error sintactico usar el mismo nombre con mas de una declaracion `let` o `const` dentro del mismo error. Es legitimo, pero una practica que no debe usarse, declarar una nueva variable con el mismo nombre en un scope anidado.
+
+```js
+const x = 1; // global scope
+
+if (x === 1) {
+  let x = 2;
+  console.log(x); // => 2
+}
+console.log(x); //=> 1 se refiere al scope global
+let x = 3; // ERROR!
+```
+
+#### Declaraciones y tipos
+
+Una variable JS puede guardar cualquier valor de cualquier tipo. Por ejemplo, es legitimo, pero mala practica, asignar un numero a auna variable y luego asignar un string a esa variable, a diferencia de un lenguaje fuertemente tipado como C o Java:
+
+```js
+let i = 10;
+i = "diez";
+```
+
+### Declarando con var
+
+En versiones pre ES6, la unica manera de declarar variables es la palabra `var`, y no existian constantes. La sintaxis de `var` es muy parecida a la de `let`:
+
+```js
+var x;
+var data = [],
+  count = data.length;
+
+for (var i = 0; i < count; i++) console.log(data[i]);
+```
+
+Aunque `var`y `let`tienen la misma sintaxis, hay diferencias importantes en como funcionan:
+
+- Las variables declaradas con `var` no tiene scope de bloque. En vez de eso, su scope es el cuerpo de la funcion que las contienen, dando igual lo anidadas que esten dentro de dicha funcion.
+- Si usas `var` fuera del cuerpo de una funcion esta es declarada globalmente. Pero las variables declaradas globalmente con `var` difieren de las globales declaradas con `let`. Las globales declaradas con `var` son implementadas como parte del objeto global! Entonces si escribes `var x = 2`; fuera del cuerpo de una funcion, es como si escribieras `globalThis.x = 2`. Aunque esta analogia no es perfecta: las propiedades creadas con global `var` no pueden ser eliminadas con el operador. `delete`. Las constantes y variables declaradas con `let` y `const` no son propiedades del objeto global.
+- A diferencia de las variables declaradas con `let` es legal declarar la misma variable multiples veces con `var`. Y como su scope es el de la funcion en el que han sido declaradas, es comun hacer redeclaraciones. Por ejemplo, la variable `i` es frecuentemente usada para referenciar los valores de un entero, o los index en un loop. En una funcion con multiples loops, es tipico por cada uno empezar con un `for(var i = 0; ...)` Porque `var` no tiene scope en el cuerpo de dicho loop, con lo cual redeclarar y reinicializan la misma variable.
+- Una de los efectos de las declaraciones de `var` se conoce como _hoisting_. Cuando una variable es declarada con `var`, la declaracion es elevada (hoisted) hacia el top de la funcion donde estan encerradas. Da igual donde las escribistes, seran movidas al top de la funcion. Por lo que pueden ser usadas en tu codigo, sin producir error, antes de su dclaracion.
+
+## Asignación por desestructuración
+
+TODO: IMPLEMENTAR
