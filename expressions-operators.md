@@ -141,7 +141,7 @@ TODO: IMPLEMENTAR
 
 ## Expresiones de invocación
 
-Una expresión de invocación de JS, es la sintaxis que tenemos para ejecutar un método o funcion. Empieza con la expresión de una función que identifica la función que desea ser llamada. La expresión de función es seguida por la apertura de parentesis, una lista separada por comas de cero o mas expresiones de argumentos, y el cierre de parentesis:
+Una expresión de invocación de JS, es la sintaxis que tenemos para ejecutar un método o funcion. Empieza con la expresión de una función que identifica la función que desea ser llamada. La expresión de función es seguida por la apertura de parentesis, una lista separada por comas de cero o mas expresiones de argumentos, y el cierre de paréntesis:
 
 ```js
 f(0);
@@ -151,7 +151,7 @@ a.sort();
 
 Cuando una expresión de invocación es evaluada, la expresión de la función es lo primero que se evalua, luego las expresiones de los argumentos, para producir una lista de valores. Si el valor de la expresión de la función no es una función, un error `TypeError` es lanzado. Seguido, los valores de los argumentos son asignados, en orden, al nombre de los parametros especificados cuando la función fue definida, y el cuerpo de la función es ejecutado. Si la función usa el estamento `return` para retornar un valor, entonces el valor viene a ser el valor de la invocación de la función. De otra manera, el valor de la expresión de invocación es `undefined`.
 
-Cada expresuón de invocación incluye un par de parentesis y una expresión antes de su apertura. Si la expresión es una expresión de acceso a propiedad, entonces la invocación es conocida como metodo de invocación. En los métodos de invocación los objetos o arrays de los la propiedad a la que se accede son parte, viene a tomar el valor del valor `this` cuando el cuerpo de la función es ejecutado. Esto habilita la programación orientada a objetos en JS, donde las funciones (metodos), operan en el objeto del que pertenecen.
+Cada expresión de invocación incluye un par de parentesis y una expresión antes de su apertura. Si la expresión es una expresión de acceso a propiedad, entonces la invocación es conocida como metodo de invocación. En los métodos de invocación los objetos o arrays de los la propiedad a la que se accede son parte, viene a tomar el valor del valor `this` cuando el cuerpo de la función es ejecutado. Esto habilita la programación orientada a objetos en JS, donde las funciones (metodos), operan en el objeto del que pertenecen.
 
 Aunque la sintaxis `.identifier`es la más simple de las dos opciones de acceso, ten en cuenta que solo puede ser usada cuando la propiedad a la que quieres tener acceso tiene un identificador legal, y existe. Si el nombre propiedad incluye espacios o caracteres de puntuacion, o es un numero, entonces debes usar la propiedad por corchetes. La sintaxis de acceso por corchetes tambien es util si el nombre de la propiedad no es estatico, sino resultado de otro calculo.
 
