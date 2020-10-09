@@ -344,55 +344,262 @@ TODO: POR IMPLEMENTAR
 
 ## Expresiones relacionales
 
-TODO: POR IMPLEMENTAR
+Estos operadores testean las relaciones (tal como "igual", "menos que" o "propiedad de") entre dos valores y retornan `true` o `false` dependiendo de si dicha relación existe. Las expresiones relacionales siempre evaluan a un valor booleano, y dicho valor es usado, normalmente, como control del flujo de ejecucuón en los estamentos `if`, `while` y `for`.
 
 ### Operadores de igualdad e inegualdad
 
-TODO: POR IMPLEMENTAR
+Los operadores `==` y `===` comprueban cuando dos valores son los mismos, usando dos diferentes definiciones para la igualdad. Ambos operadores aceptan operandos de cualquier tipo, y ambos retornan `true`si sus oprandos son los mismos y `false` si son diferentes.
+
+El operador `===` es conocido como el **operador de igualdad estricta** (u operador de identidad), y comprueba cuando dos valores son **identicos** usando una definición estricta de igualdad.
+
+El operador `==` es conocido como el **operador de igualdad** y comprueba que dos valores son **iguales** usando una definición más laxa de igualdad que permite la conversión de tipos.
+
+Los operadores `!=` y `!==` son lo opuestos de `==` y `===`.
+
+El operador de inegualdad `!=` devuelve `false` si dos valores son iguales el uno al otro segun las normas de `==` y retorna `true` en caso contrario.
+
+El operador de inegualdad estricta `!==` devuelve `false` si dos valores son identicos el uno al otro segun las normas de `===` y retorna `true` en caso contrario.
+
+_El operador `!` calcula la operación booleana NOT. Esto hace facil de recordar que los operadores de inegualdad significan algo asi como: "no es igual", "no es estrictamente igual"._
+
+Ya mencionamos que JS compara los objetos por referencia, no por valor. Un objeto es igual a si mismo, pero no a otro objeto. Un objeto será diferente a otro aunque tengan las mismas propiedades y métodos. Lo mismo ocurren con los arrays que tengan los mismos elementos en el mismo orden, no serán iguales entre si, si no es por referencia.
 
 #### Igualdad estricta
 
-TODO: POR IMPLEMENTAR
+El operador de igualdad estricta `===` evalua sus operandos, luego compara los dos valores sin realizar ninguna conversión de tipos, de la siguiente manera:
+
+- Si los dos valores tienen diferente tipo, no son iguales.
+- Si ambos valores son `null` o ambos son `undefined`, entonces son iguales.
+- Si ambos valores son el valor booleano `true` o ambos son el valor booleano `false`, entonces son iguales.
+- Si uno o ambos valores es `NaN`, entonces no son iguales. (`NaN` nunca es igual a otro valor, ni siquiera así mismo, recuerda que debemos usar `isNaN()` si quieres comprobar explicitamente si un valor es `NaN`).
+- Si ambos valores son números y tienen el mismo valor, entonces son iguales. A excepción de un caso, `0 === -0` son iguales para JS.
+- Si dos valores son strings y contienen los mismos valores de 16-bit, en la misma posición, entonces son iguales. JS no realiza normalización Unicode y si varían en contenido o longitud, no serán iguales.
+- Si dos valores se refieren al mismo objeto, array o función, entonces son iguales.
 
 #### Igualdad con conversión de tipo (no estricta)
 
-TODO: POR IMPLEMENTAR
+El operador de igualdad `==` es como el de igualdad estricta, pero un poquito más laxo. Si los valores de los dos operandos no son del mismo tipo, intentará realizar una conversión de tipos y luego compararlos de nuevo:
+
+- Si dos valores tienen el mismo tipo, comparará de manera estructa entre ellos.
+- Si dos valores no son del mismo tipo, el operador `==` podría considerarlos iguales. Siguiendo las siguientes reglas y conversiones de tipo para comprobar la igualdad:
+
+  - Si un valor es `null` y el otro es `undefined`, entonces son iguales
+  - Si un valor es un número y el otro es un string, convierte el string a número e intenta la comparación de nuevo, usando el valor convertido.
+  - Si ambos valores son `true`, los convierte a `1` e intenta la comparación de nuevo.
+  - Si ambos valores son `false`, los convierte a `0` e intenta la comparación de nuevo.
+  - Si un valor es un objeto y el otro es un número o string, convertira el objeto a primitivo, usando bien el método `toString()` del mismo o `valueOf()`. Cualquier clase del core de JS primero intentará usar `valueOf()` para la conversión y luego `toString()`, a excepción de los `Date` que siempre usan `toString()`.
+
+  Cualquier otra combinación de valores, será considerada como "no igual".
+
+Ejemplo:
+
+```js
+"1" === true; // => true
+```
+
+La expresión evalua a `true`, indicando que esos dos valores tan diferentes son de hecho iguales. El valor booleano `true` ha sido convertido al número `1` y luego se realiza la comparación de nuevo. Luego se convierte el sring `"1"` al número `1`. Como ambos valores son el mismo, la comparación devuelve `true`.
 
 ### Operadores de comparación
 
-TODO: POR IMPLEMENTAR
+Los operadores de comparación preban el orden relativo, numérico o alfabético, de sus dos operandos:
+
+- _Menor que `<`_: El operador `<` evalua a `true` si su primer operando es menor que el segundo, de otra manera, evalua `false`.
+- _Mayor que `<`_: El operador `>` evalua a `true` si su primer operando es mayor que el segundo, de otra manera, evalua `false`.
+- _Menor o igual que `<=`_: El operador `<=` evalua a `true` si su primer operando es menor o igual que el segundo, de otra manera, evalua `false`.
+- _Mayor que `<`_: El operador `>=` evalua a `true` si su primer operando es mayor o igual que el segundo, de otra manera, evalua `false`.
+
+Los operandos de estos comparadores pueden ser de cualquier tipo. La comparación es realizada solo sobre números o strings, pero si son de diferente tipos a números o strings entonces son convertidos.
+
+La comparación y conversión sigue las siguientes reglas:
+
+- Si cualquier operando evalua a un objeto, entonces el objeto se convierte a un valor primitivo. Si su método `valueOf()` retorna un valor primitivo, el valor es usado. Sino utilizará el valor que retorne su método `toString()`.
+- Si después de realizar una conversión, ambos operandos son strings, los dos strings son comparados usando orden alfabético. Donde dicho orden es definido por el orden numérico de 16-bit de los valores Unicode que componen los strings.
+- Si después de realizar la conversión, al menos uno de los operandos no es un string, ambos operandos son convertidos a números y comparados numéricamente. `0` y `-0` son considerados igales. `Infinity` es más grande que cualquier número que no sea el mismo y `-Infinity` es considerado más pequeño que cualquier número que no sea el mismo. Aunque los operadores aritméticos no permiten mezclar valores de `BigInt` con número regulares, pero los operadores de comparación como estos si.
+
+Recuerda que en JS los strings son secuencias de 16-bit de valores enteros, y una comparación de sdtrings es realmente una comparación numérica de valores entre los dos strings. El orden de codificación numérica definido por Unicode puede no casar con el orden de nuestro lenguaje. Además la comparación de strings es sensible a las mayúsculas y minúsculas, y todas las letras en mayúsculas son menores que las letras en minúsculas.
+
+```js
+"zoo" < "Alba"; // => true
+```
+
+Para una comparación más robusta, podemos usar el método `String.localeCompare()`, que tiene encuenta definiciones alfabéticas dentro del idioma del navegador. Para comparaciones que no deseemos que sean sensibles a las mayúsculas o minúsculas, podemos convertir todos los strings a uno de los dos tipos con `String.toUpperCase()` o `String.toLowerCase()`. Para algo más localizado podemos usar la clase `Intl.Collator`.
+
+Ambos, el operador `+` y los operadores de comparación trabajan diferente entre strings y números. `+` prefiere los strings, realizando la concatenación si ambos operandos son strings. Los operadores de comparación prefieren los nùmeros y solo realizan comparaciones entre strings si ambos lo son:
+
+```js
+1 + 2; // => 3: suma
+"1" + "2"; // => "12": concatenacion
+"1" + 2; // => "12": concatenacion tran convertir 2 en "2"
+11 < 3; // => false: comparacion numérica
+"11" < "3"; // => true: comparacion de strings
+"11" < 3; // => false: comparacion numérica, "11" es convertido a 11
+"one" < 3; // => false: comparación numérica, "one" es convertido a NaN
+```
+
+Además, destacar que `<=` y `>=` no usan la igualdad o igualdad estricta para determinar cuando dos valores son iguales. En vez de eso, el operador _menor o igual que_ es simplemente definido como _no más grande que_ y el operador _mayor o igual que_ se define como _no es menor que_. La única excepcion se dá cuando algun operando es o convierte a `NaN`, en ese caso cualquiera de las cuatro comparaciones retornara `false`.
 
 ### Operador: in
 
-TODO: POR IMPLEMENTAR
+El operador `in` espera que el operando de su izquierda sea un string, símbolo o valor que pueda ser convertido a un string. Y espera que el operando de su lado derecho sea un objeto. Evalua `true` si el valor del lado izquierdo es el nombre de una propiedad del objeto de su lado derecho:
+
+```js
+const p = { x: 1, y: 1 };
+"x" in p; // => true: el objeto tiene una propiedad llamada "x"
+"z" in p; // => false: el objeto no tiene una propiedad llamada "z"
+"toString" in p; // => true: todo objeto hereda un método llamada toString
+
+const arr = [7, 8, 9];
+"0" in arr; // => true: existe el index
+1 in arr; // => true: el numero es convertido a string
+3 in arr; // => false: no existe dicho index
+```
 
 ### Operador: instanceof
 
-TODO: POR IMPLEMENTAR
+El operador `instanceof` espera que el operando de su lado izquierdo sea un objeto y el del lado derecho una clase que identifique al objeto. El operado evalua a `true` si el objeto del lado izquierdo es una instancia de la clase del lado derecho y evalua a false en caso contrario.
+
+```js
+const d = new Date();
+d instanceof Date; // => true: d es una instancia de Date
+d instanceof Object; // => true: todos los objetos son instancias de Object
+d instanceof Number; // => false: d no es un objeto Number
+
+const a = [1, 2, 3];
+a instanceof Array; // => true: a es un array
+a instanceof Object; // => true: todos los arrays son instancias de Object
+a instanceof RegExp; // => false: los arrays no son expresiones regulares
+```
+
+Destacar que todos los objetos son instancias de `Object`. `instanceof` considera las superclases cuando decide si un objeto es una instancia de una clase. Si el operando del lado izquierdo de `instanceof` no es un objeto, entonces retorna `false`. Si el del lado derecho no es una clase de objetos, entonces lanzará un error `TypeError`.
+
+Para entender como funciona el operador `instanceof` hay que entender la cadena de prototipos en JS. Suscitamente, para evaluar la expresión `o instanceof f` JS evalua `f.prototype` y luego busca ese valor en la cadena de prototipos de `o`. Si lo encuentra entonces `o` es instancia de `f`, o una subclase y el operador retorna `true`. En caso contrario retorna `false`.
 
 ## Expresiones lógicas
 
-TODO: POR IMPLEMENTAR
+Los operadores lógicos `&&`, `||` y `!` realizan algebra booleanay son usados normalmente con los operadores relacionales para combinar dos expresiones relacionales en una más compleja.
 
 ### AND (&&)
 
-TODO: POR IMPLEMENTAR
+El operador `&&` puede ser entendido en tres niveles diferentes. En su nivel más simple, cuando es usado con operandos booleanos, `&&` realiza la operación booleana AND en los dos valores: retorna `true` si y sólo si el primero operando y el segundo operando son `true`. Si alguno de sus operandos es `false`, retornará `false`.
+
+`&&` es usado a menudo como conjunción para unir dos expresiones relacionales:
+
+```js
+x === 0 && y === 0; // true si y solo si x e y son igual a 0
+```
+
+Las expresiones relacionales siempre evaluan a `true` o `false`, entonces cuando son usadas así, el operador `&&` en si mismo retorna `true` o `false`. Los operadores relacionales tienen mayor precedencia que los lógicos, por lo que las expresiones como la anterior pueden ser escritar de manera segura sin paréntesis.
+
+Pero `&&` no requiere que sus operandos sean valores booleanos. Recuerda que todos los valores JS son ciertos o falsos. El segundo nivel al que `&&` puede ser entendido es como operador booleano AND para valores ciertos o falsos. Si ambos operandos son ciertos, el operador retorna un valor cierto. De la otra manera, si ambos operandos son falsos, el operador retorna un valor falso. En JS cualquier expresión o estamento que espera un valor booleano puede trabajar con valores ciertos o falsos, por lo que el hecho de que `&&` no siempre retorne `true` o `false` no causa problemas prácticos.
+
+Hemos dicho que el operador retorna un valor cierto o falso, pero no qué valor es. Para eso, necesitamos describir el tercer nivel de `&&`. Este operador empieza evaluando su primer operando, la expresión a si izquierda. Si el valor a su izquierda es falso, el valor de la expresión entera será falso, entonces `&&` simplemente retorna el valor de si izquierda y no llega a evaluar la expresión de su derecha.
+
+Por otro lado, si el valor de su izquierda fuera cierto, toda el valor de la expresión depende del valor de su lado derecho. Si el valor del lado derecho es cierto, entonces todo el valor de la expresión sera cierto, y si fuera falso entonces todo el valor de la expresión sería falso. Entonces cuando el valor de su operando izquierdo es cierto, `&&` evalua y devuelve el valor de su derecha:
+
+```js
+const o = { x: 1 };
+const p = null;
+o && o.x; // => 1: o es cierto entonces retorna o.x
+p && p.x; // => null: p es falso, entonces lo retorna y no evalua p.x
+```
+
+Es importante entender que `&&` puede o no puede evaluar el operando de su lado derecho. Este comportamiento de `&&` es conocido como cortocircuito, y podemos explotar ese comportamiento para ejecutar código de manera condicional:
+
+```js
+if (a === b) stop();
+a === b && stop();
+```
+
+En general, debes tener cuidado cuando escribamos expresiones con efectos secundarios en el lado derecho de `&&`. El que esos efectos ocurran dependerán del valor del lado izquierdo.
 
 ### OR (||)
 
-TODO: POR IMPLEMENTAR
+El operador `||` realiza la operación booleana OR en los dos operandos. Si uno de los dos operandos es cierto, entonces retorna un valor cierto. Si ambos operandos son falsos, retorna un valor falso.
+
+Aunque el operador `||` es comunmente usado como operador booleano OR, y como el operador `&&`, tiene un comportamiento algo más complejo. Empieza evaluando su primer operando, la expresión de su izquierda. Si el valor del primer operando es cierto, cortocircuita y retorna dicho valor cierto sin siquiera evaluar la expresión de su derecha. Por otro lado, si el valor del primer operando es falso, `||` evalua el segundo operando y retorna el valor de dicha expresión.
+
+Tal como hacemos con el operador `&&`, deberíamos evitar operandos del lado derecho que incluyan efectos secundarios, a menos que tu proposito sea usar este comportamiento.
+
+Un uso común de este operador es seleccionar el primer valor cierto en un conjunto de alternativas:
+
+```js
+// seleccion del primero que sea cierto
+const max = maxWdith || preferences.maxWidth || 300;
+```
+
+**Cuidado!**, porque aunque `0` es un valor legal, el anterior código no funcionaría dado que `0` es un valor falso. Como alternativa en estos casos puede usarse el operador `??`.
+
+Antes de ES6, este comportamiento era usado en funciones para ofrecer un valor por defecto a los parámetros:
+
+```js
+function copy(o, p) {
+  var p = p || {}; // Si no existe el objeto p en parámetros, usa uno nuevo
+  // {...}
+}
+```
+
+Tras ES6 esto ya no es necesario dado que podemos ofrecer valores por defecto en la propia declaración de parámetros:
+
+```js
+function copy(o, p = {}) {
+  // {...}
+}
+```
 
 ### NOT (!)
 
-TODO: POR IMPLEMENTAR
+El operador `!` es un operador unario, se anticipa antes de un único operando. Su proposito es invertir el valor booleano de sus operandos. Por ejemplo, si `x` es cierto, `!x` evalua a `false` y viceversa.
+
+A diferencia de `&&` y `||`, el operador `!` convierte su operando en un valor booleano antes de invertir el valor convertido. Esto significa que `!` siempre retorna `true` o `false` y puedes convertir cualquier valor `x` a su equivalente booleano si aplicas el operador dos veces: `!!x`.
+
+Como operador unario, `!` tiene una alta precedencia y se asocia de manera muy cercana. Si quieres invertir el valor de una expresión como `p && q`, necesitas usar paréntesis `!(p && q)`.
 
 ## Expresiones de asignación
 
-TODO: POR IMPLEMENTAR
+JS usa el operador `=`para asignar un valor a una variable o propiedad:
+
+```js
+i = 0; // Establece la variable i a 0
+o.x = 1; // Establece la propiedad x del objeto o en 1
+```
+
+El operador `=` espera que el lado izquierdo de su operando sea una variable, propiedad de un objeto o elemento de un array. Y espera que el operando de su lado derecho sea un valor arbitrario de cualquier tipo. El valor de una expresion de asignación, es el valor del operando del lado derecho. Como efecto secundario, el operador `=` asigna el valor del lado derecho a la variable o propiedad de la izquierda de tal manera que futuras referencias a dicha variable o propiedad evaluen su valor.
+
+Aunque las expresiones de asignación son normalmente muy simples, puede que encuentres valores de asignación en expresiones que son parte de una más larga:
+
+```js
+(a = b) === 0; // Asignacion y test en la misma expresión
+```
+
+El operador de asignación tiene asociatividad de derecha a izquierda, lo que significa que si varias asignaciones aparecen en una expresión seran evaluadas en dicha dirección.
+
+```js
+i = j = k = 0; // Inicializa 3 variables a 0
+```
 
 ### Asginación con operación
 
-TODO: POR IMPLEMENTAR
+Aparte del operador `=` de asignación, JS soporta un número de operadores de asignación que son azucar sintáctico sobre la combinación de asignación y otro operador. Por ejemplo, el operador `+=` realiza una suma y asignación:
+
+```js
+total += IVA;
+
+// equivalente a
+total = total + IVA;
+```
+
+Como es de esperar dicho operador funciona tanto para números como strings. Para operandos numéricos realizará una suma y asignación, para strings una concatenación y asignación posterior.
+
+![](media/expressions-operators/operators-assignment1.png)
+![](media/expressions-operators/operators-assignment2.png)
+
+¡Cuidado con los efectos secundarios! Porque pueden romper dicha equivalencia:
+
+```js
+data[i++] *= 2;
+// estas expresiones NO son equivalentes
+data[i++] = data[i++] * 2;
+```
 
 ## Expresiones de evaluación
 
