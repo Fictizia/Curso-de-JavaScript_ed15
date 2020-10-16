@@ -90,6 +90,7 @@ Frontend Developer en Viajes el Corte Inglés donde desarrolla aplicaciones que 
   - [Asignación por desestructuración](./values-types-and-vars.md#asignación-por-desestructuración)
 
 - [Expresiones y operadores](./expressions-operators.md#expresiones-y-operadores)
+
   - [Expresiones primarias](./expressions-operators.md#expresiones-primarias)
   - [Inicializadores de objetos y arrays](./expressions-operators.md#inicializadores-de-objetos-y-arrays)
   - [Expresiones de definicion de funciones](./expressions-operators.md#expresiones-de-definicion-de-funciones)
@@ -133,3 +134,17 @@ Frontend Developer en Viajes el Corte Inglés donde desarrolla aplicaciones que 
     - [Operador delete](./expressions-operators.md#operador-delete)
     - [Operador void](./expressions-operators.md#operador-void)
     - [Operador de coma (,)](./expressions-operators.md#operador-de-coma-)
+
+- [Estamentos](./statements.md#estamentos)
+
+  - [Estamentos expresión](./statements.md#estamentos-expresión)
+  - [Estamentos compuestos y vacíos](./statements.md#estamentos-compuestos-y-vacíos)
+  - [Condicionales](./statements.md#condicionales)
+    - [if](./statements.md#if)
+    - [else if](./statements.md#else-if)
+    - [switch](./statements.md#switch)
+  - [Loops](./statements.md#loops)
+    - [while](./statements.md#while)
+    - [do/while](./statements.md#dowhile)
+    - [for](./statements.md#for)
+  - [Recursión](./statements.md#recursión)
