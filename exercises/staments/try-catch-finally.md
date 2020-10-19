@@ -6,7 +6,8 @@ Crea un archivo `.js` y guardalo en tu carpeta de ejercicios
 
 ## Descripción
 
-- Lanza un error desde la funcion suma si el tipo del parametro no es un numero
+- Lanza un error desde ambas funciones de suma si el tipo del parametro no es un numero
+- Captura el error en la expresion final y en el catch implementa un console.error del error, ejemplo:
 
 ```js
 function sum(x, y) {

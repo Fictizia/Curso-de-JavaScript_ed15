@@ -335,7 +335,115 @@ _Lee: [El siguiente enlace](https://portfoliostuff-parenttobias.codeanyapp.com/2
 
 ### for/of
 
+ES6 define un nuevo estamento de loop `for/of`. Este estamento es completamente diferente al loop `for` común.
+El loop `for/of` trabaja con objetos iterables. Arrays, strings, sets y maps son iterables: representan secuencias de conjuntos de elementos sobre los que puedes iterar usando un loop `for/of`.
+
+Por ejemplo, para iterar sobre los elementos de un array de números y calcular su suma:
+
+```js
+const data = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+let sum = 0;
+
+for (let element of data) {
+  sum += element;
+}
+
+sum; // => 45
+```
+
+La sintáxis es parecida a la de un loop `for`: la palabra `for` seguida de paréntesis que contienen detalles sobre qué debe hacer el loop. En este caso, los paréntesis contienen una declaración de variables (al igual que un loop `for` pueden ser variables ya declaradas, usaríamos simplemente su nombre) seguido de la palabra `of` y una expresión que debe evaluar a un objeto iterable, como `data` en este caso. El cuerpo del loop `for/of` sigue a los paréntesis entre llaves, como en cualquier otro loop.
+
+En el anterior código, el cuerpo del loop es ejecutado por cada elemento del array `data`. Antes de cada ejecución del cuerpo del loop, el siguiente elemento del array es asignado a la variable. Los elementos del array son iterados en orden de principio hasta el final.
+
+Los arrays son iterados en vivo, cualquier cambio realizado durante la iteración afectará al resultado Si moficamos el anterior código y añadimos la línea `data.push(sum);` en el cuerpo del loop, entonces crearemos un loop infinito porque nunca alcanzamos el final del array.
+
+#### for/of con objetos
+
+Los objetos no son iterables por defecto. Intentar usar un `for/of` con un objeto lanzará un `TypeError`. Si deseamos iterar las propiedades de un objeto, podemos usar un loop `for/in` o mezclar `for/of` con `Object.keys()`:
+
+```js
+const o = { x: 1, y: 2, z: 3 };
+let sum = 0;
+
+for (let k of Object.keys(o)) {
+  sum += o[k];
+}
+
+sum; // => 6
+```
+
+Esto funciona porque `Object.keys()` retorna un array con los nombres de las propiedades del objeto, y los arrays siempre serán iterables por un bucle `for/of`. Destacar que en este caso los cambios sobre el objeto, no afectarán a la ejecución del loop.
+
+El anterior ejemplo puede ser escrito así, solo consultando valores:
+
+```js
+const o = { x: 1, y: 2, z: 3 };
+let sum = 0;
+
+for (let v of Object.values(o)) {
+  sum += v;
+}
+
+sum; // => 6
+```
+
+Y si nos interesan ambos, claves y valores, podemos usar `Object.entries()` con la asignación por desestructuración:
+
+```js
+const o = { x: 1, y: 2, z: 3 };
+let pairs = "";
+for (let [k, v] of Object.entries(o)) {
+  pairs += k + v;
+}
+
+pairs; // => x1y2z3
+```
+
+#### for/of con strings
+
 TODO: IMPLEMENTAR
+
+#### for/of con Set y Map
+
+TODO: IMPLEMENTAR
+
+### for/in
+
+Un bucle `for/in` trabaja con cualquier objeto despues del `in`.
+El estamento `for/in` itera a través de los nombres de propiedades de un objeto específico.
+
+```text
+for (variable in object)
+  estamento
+```
+
+`variable` suele referirse al nombre de una variable, pero puede ser la declaración de una variable o cualquier cosa configurable como el lado izquierdo de una expresión de asignación. `object` es una expresión que debe evaluar a un objeto. Y como siempre `estamento` es el blo que que sirve como cuerpo del loop:
+
+```js
+for (let p in o) {
+  console.log(o[p]);
+}
+```
+
+Para ejecutar un estamento `for/in`, el intérprete de JS primero evalua la expresión de objeto. Si esta es `null` o `undefined`, el intérprete saltará el loop completamente. Al ejecutar el cuerpo del loop, lo hará una vez por cada propiedad enumerable del objeto. Antes de cada iteración, el intérprete evaluará la expresión `variable` y asignará el nombre de la propiedad, un string, a ella.
+
+Destacara que la `variable` en un loop `for/in` puede ser una expresión cualquiera, mientras evalue a algo que puede asignarse. Esta expresión es evaluada vada vez que iteramos el loop, lo que signifíca que puede ser diferente cada vez. Por ejemplo, para copiar todos los nombres de propiedades de un objeto en un array:
+
+```js
+const o = {x: 1, y: 2, z: 3}
+const a = [];
+let i = 0;
+
+for (a[i++] in o)
+```
+
+Aunque este tipo de bucles se puede usar con arrays, es preferible no hacerlo.
+
+Hay que tener en cuenta que el bucle `for/in` no siempre enumera todas las propiedades de un objeto. Por ejemplo esto no ocurrirá si estas son `Symbol`. Y para aquellas propiedades cuyos nombres son strings, solo lo hará si son enumerables. Muchos métodos definidos en el core de JS no son enumerables. Todos los objetos tienen un método `toString()` pero `for/in` no los enumerará. Como regla general, todas las propiedades y métodos definidos por nuestro código son enumerables por defecto, pero no está garantizado que en los objetos de js esto se cumpla.
+
+Las propiedades enumerables heredadas también serán enumeradas por el loop `for/in`. Esto significa que usando un `for/in` en código que hace uso de propiedades heredadas por todos los objetos, puede dar comportamientos no esperados. Por eso muchos programadores prefieren usar un bucle `for/of` con `Object.keys()` en vez de un `for/in`.
+
+Si el cuerpo de un `for/in` elimina una propiedad que no ha sido enumerada todavía, esta no será enumerada. Si define una nueva propiedad en el objeto, tampoco será enumerada.
 
 ## Saltos
 

@@ -779,4 +779,92 @@ Aunque `var`y `let`tienen la misma sintaxis, hay diferencias importantes en como
 
 ## Asignación por desestructuración
 
-TODO: IMPLEMENTAR
+ES6 implementa un tipo de composición para la sintáxis de declaración y asignación conocida como asignación por desestructuración.
+
+En la asignación por desestructuración, el valor a la derecha del `=` es un valor estructurado, un objeto o un array y a la izquierda se especifica una o más nombres de variables usando una sintáxis que replica el literal del objeto u array. Cuando una asignación por desestructuración aparece, uno o más valores son extraidos, desestructurados, del valor de la derecha y guardados en los nombres de las variables de la izquierda. La asignación por desestructuración es comunmente usada para inicializar variables como parte de los estamentos de declaración `const` o `let`, pero también puede funcionar al asignar valores a variables ya declaradas.
+
+Por ejemplo, usando la asignación por desestructuración en valores de arrays:
+
+```js
+const [x, y] = [1, 2]; // es como escribir const x = 1; const y = 2;
+[x, y] = [x + 1, y + 1]; // igual que x = x+1, y = y+1
+[x, y] = [y, x][(x, y)]; // damos la vuelta a los dos valores // => [3,2]: los valores incrementados y dados la vuelta
+```
+
+La asignación por desestructuración funciona muy bien con funciones que retornan valores de arrays:
+
+```js
+// Convierte coordenadas [x, y] en coordenadas polares [r, theta]
+function toPolar(x, y) {
+  return [Math.sqrt(x * x + y * y), Math.atan2(y, x)];
+}
+
+// Convierte coordenadas polares a Cartesianas
+function toCartesian(r, theta) {
+  return [r * Math.cos(theta), r * Math.sin(theta)];
+}
+
+const [r, theta] = toPolar(1.0, 1.0);
+const [x, y] = toCartesian(r, theta);
+```
+
+Las variables y constantes pueden ser declaradas como parte de uno de los tipos de loop `for` de JS. Con lo que podemos usar la asignación por desestructuración en este contexto. El siguiente código itera sobre el par nombre/valor de todas las propiedades de un objeto y usa la asignación por desestructuración para convertir dichos pares en dos elementos de un array en variables individuales:
+
+```js
+const o = { x: 1, y: 2 };
+for (const [name, value] of Object.entries(o)) {
+  console.log(name, value);
+}
+```
+
+El número de variables a la izquierda de la asignación por desestructuración no tiene porque casar con el número de elementos del array de su derecha. Variables extra en el lado izquierdo seran establecidas como `undefined`, y los valores extra en el lado derecho serán ignorados. La lista de variables en el lado izquierdo, puede incluir comas extra para saltar ciertos valores de la derecha:
+
+```js
+const [x, y] = [1]; // x === 1; y == undefined
+[x, y] = [1, 2, 3]; // x === 1; y === 2
+[, x, , y] = [1, 2, 3, 4]; // x === 2; y === 4
+```
+
+Si queremos colleccionar todos valores no usados o restantes en una sola variable cuando desestructuramos un array, usamos `...` antes del nombre de la última variable en el lado izquierdo:
+
+```js
+let [x, ...y] = [1, 2, 3, 4]; // x === 1; y === [2,3,4]
+```
+
+La asignación por desestructuración también puede ser usada con arrays anidados. En este caso, en el lado izquierdo de la asignación deberíamos incluir un literal de array anidado:
+
+```js
+const [a, [b, c]] = [1, [2, 2.5], 4]; // a === 1; b === 2; c === 2.5
+```
+
+Una de las características más importantes de la asignación por desestructuración es que no requiere un array. Puede ser usada con cualquier objeto iterable en el lado derecho de la asignación, cualquier objeto que puede usarse en un loop `for/of` puede desestructurarse:
+
+```js
+const [first, ...rest] = "Hello"; // first === "H"; rest === ["e", "l", "l", "o"]
+```
+
+La asignación por desestructuración también funciona cuando el lado derecho es un objeto regular. En este caso, el literal del lado izquierdo de la asignación debe ser un literal de objeto: una lista separada por comas de nombres de variables entre llaves:
+
+```js
+const transparent = { r: 0.0, g: 0.0, b: 0.0, a: 0.0 };
+const { r, g, b } = transparent; // r === 0.0; g === 0.0; b === 0.0
+```
+
+El siguiente ejemplo, copia las funciones globales del objeto `Math` en variables, lo cual puede simplifcar un código que haga un constante uso de ellas:
+
+```js
+const { sin, cos, tan } = Math; // igual que hacer const sin=Math.sin, cos=Math.cos, tan=Math.tan
+```
+
+Ten en cuenta que en el código anterior el objeto `Math` tiene muchas más propiedades que las que estan desestructuradas en el lado izquierdo en forma de variables. Aquellas que no nombramos, son ignoradas. Si el lado izquierdo de la asignación incluye una variable cuya propiedad no es parte de `Math`, entonces esa variable se establece como `undefined`.
+
+Hasta ahora cada variable elegida al desestructurar casa con el nombre de la propiedad del objeto que estamos desestructurando. Pero esto no es requerido, aunque hace las cosas más faciles de leer. Cada identificador del lado izquierdo de un objeto desestructurado, puede también ser una par de identificación separado por `:`, donde el primero es el nombre de la propiedad cuyo valor se va asignar y el segundo el nombre de la variable asignada:
+
+```js
+// igual que const cosine = Math.cos, tangent = Math.tan;
+const { cos: cosine, tan: tangent } = Math;
+```
+
+_Nota: Usar este tipo de sintáxis de desestructuracion, con alias, resulta demasiado complicado para ser util cuando los nombres de variables y las propiedades no son los mismos y casi resulta mejor no usarlo. Si lo hacer recuerda que los nombres de las propiedades van siempre con `:` en el lado izquierdo, tanto en los literales de objetos como en el lado izquierdo de una asignación por desestructuración_
+
+TODO: IMPLEMENTAR CASOS COMPLICADOS

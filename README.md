@@ -158,3 +158,17 @@ Frontend Developer en Viajes el Corte Inglés donde desarrolla aplicaciones que 
     - [try/catch/finally](./statements.md#trycatchfinally)
   - [Otros estamento](./statements.md#otros-estamento)
   - [Declaraciones](./statements.md#declaraciones)
+
+- [Objetos](./objects.md#objetos)
+
+- - [Introducción a los objetos](./objects.md#introducción-a-los-objetos)
+  - [Creando objetos](./objects.md#creando-objetos)
+    - [Literal de objeto](./objects.md#literal-de-objeto)
+    - [Creando objetos con new](./objects.md#creando-objetos-con-new)
+    - [Prototipos](./objects.md#prototipos)
+    - [Object.create()](./objects.md#objectcreate)
+  - [Consultando y estableciendo propiedades](./objects.md#consultando-y-estableciendo-propiedades)
+    - [Objetos como arrays asociativos](./objects.md#objetos-como-arrays-asociativos)
+    - [Herencia](./objects.md#herencia)
+    - [Error en el acceso a propiedades](./objects.md#error-en-el-acceso-a-propiedades)
+  - [Borrando propiedades](./objects.md#borrando-propiedades)
