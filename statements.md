@@ -301,7 +301,7 @@ function tail(o) {
 
 El código anterior no tiene expresión de inicialización. Cualquiera de las tres expresiones comentadas pueden ser omitidas en un loop `for`, pero los `;` son requeridos. Si omitimos la expresión de test, el loop se repetirá para siempre, `for(;;)` es equivalente a un `while(true)`
 
-## Recursión
+### Recursión
 
 La recursividad es el concepto de que una función se puede expresar en términos de sí misma. Para ayudar a comprender esto, piensa en la siguiente tarea: multiplica los primeros n elementos de un array para crear el producto de esos elementos. Usando un bucle `for`, puedes hacer esto:
 
@@ -332,3 +332,195 @@ La versión recursiva de `multiply` se descompone así. En el caso base, donde `
 _Nota: Las funciones recursivas deben tener un caso base cuando regresan sin llamar a la función nuevamente (en este ejemplo, cuando `n <= 0`), de lo contrario nunca podrán terminar de ejecutarse._
 
 _Lee: [El siguiente enlace](https://portfoliostuff-parenttobias.codeanyapp.com/2020/01/29/recursion-all-the-way-down/)_
+
+### for/of
+
+TODO: IMPLEMENTAR
+
+## Saltos
+
+Otra categoría de los estamentos de JS son los saltos. Como su nombre implica, estos causan que el interprete de JS salte a una nueva localización en el código. El estamento `break` hace que el intérprete salte al final del loop o de otro estamento. `continue` hace que el intérprete pase del resto del cuerpo de un loop y vuelva al principio del mismo a empezar una nueva iteración. A su vez JS, permite etiquetar estamentos, de tal manera que `break` y `continue` puedan identificar el loop objetivo a saltar u otro estamento.
+
+El estamento `return` hace que el intérprete salte de la invocación de una función de vuelta al código que la invocó y a su vez remite el valor de la invocación a dicha función. El estamento `throw` es una especie de generador dentro de una función, lanzando una exepción y es diseñado para trabajar con estamentos `try/catch/finally`, los cuales nos permiten establecer bloques de código donde manejar errores. Es un estamento de salto complicado, pues cuando una excepción es lanzada el intérprete saltará al manejador más cercano, que puede estar dentro de la misma función o en el stack que rodea a la invocación dela misma.
+
+### Estamentos etiquetados
+
+TODO: IMPLEMENTAR
+
+### Break
+
+El estamento `break`, usado en solitario, hace que el loop o `switch` más cercano que lo envuelve termine inmediatamente. Su sintáxis es simple:
+
+```js
+break;
+```
+
+Como causa que un loop o `switch` salgan, esta forma del estamento `break` solo es legal si aparece dentro de dichos estamentos. En los loops es usado normalmente para causar que salgan de forma prematura, da igual la razón, si no hay necesidad de completar el loop. Cuando un loop tiene condiciones de finalización complejas, es normalmente más facil implementar dichas condiciones con estamentos break, en vez de intentar expresar todo en una única expresión.
+
+Por ejemplo, el siguiente código busca los elementos de un array que tienen un valor particular. El loop termina de manera normal cuando alcanza el final del array, pero también con un `break` si alcanza su objetivo de búsqueda:
+
+```js
+for (let i = 0; i < a.length; i++) {
+  if (a[i] === target) {
+    break;
+  }
+}
+```
+
+TODO: Implementar información con etiqueta
+
+### continue
+
+El estamento `continue` es similar al estamento `break`. En vez de salir de un loop, `continue` reinicia el loop hasta la siguiente iteración. Su sintaxis es simple:
+
+```js
+continue;
+```
+
+Solo puede ser usado dentro de un loop, en cualquier otro lado causará un error de sintáxis.
+Cuando el estamento `continue` se ejecuta, la iteración del loop actual finaliza, y la siguiente iteración empieza. Dependiendo del tipo de loop:
+
+TODO: Completar
+
+- En un loop `while`, la expresión al inicio del loop es testeada de nuevo y el loop empieza desde el top del mismo si esta expresión se evalua como `true`.
+- En un loop de tipo for, la expresión de incremento es evaluada y la expresión de test vuelta a ejecutar para determinar si la iteración debe ser realizada.
+
+La diferencia en comportamiento de `continue` entre un bucle `while` y un `for` es: que un loop `while` retorna directamente a la condición, pero el `for` evalua el incremento y retorna a la condición.
+
+Hemos considerado el comportamiento de un loop `for` en terminos de equivalencia de un `while`, Como el estamento `continue` se comporta diferente entre estos dos loops, no es posible simular un `for` perfectamente como un `while` en solitario..
+
+El siguiente ejemplo muestra un estamento `continue` usado para saltar el resto de la iteración si el error ocurre:
+
+```js
+for (let i = 0; i < data.length; i++) {
+  if (!data[i]) {
+    continue; // No puedo continuar si no tengo datos
+  }
+
+  total += data[i];
+}
+```
+
+### return
+
+Teniendo en cuenta que la invocación a funciones son expresiones y todas las expresiones evaluan a valores. Un estamento `return` dentro de una función especifica el valor de la invocación de dicha función. Su sintáxis es simple:
+
+```js
+return expression;
+```
+
+Un estamento `return` puede aparecer solo dentrod del cuerpo de una funcuón. Si aparece en cualquier otro lado JS lanzará un un error de sintáxis. Cuando un estamento `return` es ejecutado, la función que lo contiene retornará un el valor de la expresión al que la invoca. Por ejemplo:
+
+```js
+function square(x) {
+  return x * x; // Retorna la evaluación de la expresión de su derecha
+}
+
+square(2); // => 4
+```
+
+Cuando uno existe dicho estamento `return`, la función al ser invocada simplemente ejecuta cada estamento de su cuerpo de uno en uno hasta que alcanza el final de la misma y retorna el control a quien la invoca. En este caso, la expresión de invocación siempre evaluará a `undefined`. El estamento `return` normalmente aparece como el último estamento de una función, pero no es necesario: la función retorna el control a su invocador cuando `return` es ejecutado, independientemente de si quedan estamentos por ejecutar en su cuerpo.
+
+El estamento `return` puede ser usado sin expresión para hacer que una función retorne `undefined` a su invocador, por ejemplo:
+
+```js
+function displayObject(o) {
+  if (o == null) {
+    return; // Retorna inmediatamente si el objeto null o undefined
+  }
+
+  // ....
+}
+```
+
+No se pueden meter saltos de línea entre el return y su expresión.
+
+### throw
+
+Una excepción es una señal que indica alguna clase de condicion excepcional o error que ocurre en el código. Lanzar una excepción es como señalizar un error o dicha condición excepcional. Capturar la excepción y manejarla significa tomar las acciones necesarias para recuperarse de dicha excepción. En JS, las ecepciones son lanzadas donde quiera que un error en tiempo de ejecución ocurra o donde un estamento `throw` esté implementado. Las excepciones son capturadas con el estamento `try/catch/finally`.
+
+La sintáxis de un `throw` es:
+
+```text
+throw expresión;
+```
+
+La expresión puede evaluarse a un valor de cualquier tipo. Puedes lanzar un número que representa un código de error o un string que contiene un mensaje legible por otros programadores. La clase `Error` y sus subclases son usadas cuando el intérprete JS lanza un error por si mismo y también podemos usarlas nosotros. Un objeto `Error` tiene una propiedad llamada `name` que especifica el tipo de error y una propiedad `message` que guarda el string pasado al constructor de la función.
+
+```js
+function factorial(x) {
+  if (x < 0) {
+    throw new Error("x must not be negative"); // se lanza una excepción ante un argumento inválido
+  }
+  // de otra manera se continua computando el valor de retorno
+  let f;
+  for (f = 1; x > 1; f *= x, x--);
+
+  return f;
+}
+```
+
+Cuando una excepción es lanzada, el intérprete de JS finaliza inmediatamente la ejecución del programa y salta a manejador de excepción más cercano. Los manejadores de excepciones se escriben usando las cláusulas `catch` del estamento `try/catch/finally`. Si el bloque de código que lanza la excepción no esta asociada a una cláusula `catch`, el intérprete busca el código que la envuelve para comprobar si existe un manejadore de excepción.
+
+En otras palabras, si la excepción se lanza en una función que no contiene un estamento `try/catch/finally` que la maneje esta es propagada a lo largo del bloque que la invoca. Si al propagarse en la cadena de invocaciones, no se encuentra ningún manejador, la excepción es tratada como un error y reportada al usuario.
+
+### try/catch/finally
+
+El estamento `try/catch/finally` es un mecanismo de manejo de excepciones en JS. La cláusula `try` de este estamento, simplemente define el bloque del código cuya excecpión ha de ser manejada. El `try` es seguido de una cláusula `catch`, la cual es un bloque que es invocado cuando una excepción ocurre en cualquier lado del bloque `try`. La clausula `catch` es seguida de un bloque `finally` cuyo cuerpo contiene el código de limpieza que es garantizado de ser ejecutado independientemente de lo que ocurra en el `try`. Ambos, `catch` y `finally` son opcionales, pero un `try` debe ser acompañado como mínimo de uno de los dos. Como los tres son cláusulas que definen bloques de código, deben ser acompañados de llaves y no son omisibles, incluso si la cláusula solo contiene un estamento:
+
+```js
+try {
+  /*
+    Normalmente este código es ejecutado sin problemas, pero hay veces que una excepción es lanzada, 
+    bien de manera directa o bien porque parte del código del bloqe use alguna función que la lanza.
+  */
+} catch (e) {
+  /*
+    Este estamento es ejecutado si y solo si el bloque try lanza una excepción. 
+    Pudiendo usar la variable local "e" que se refiere al objeto error o valor lanzado por el throw.
+    Aqui podemos manejar la excepción, ignorarla o lanzar una nueva si es necesario.
+  */
+} finally {
+  /*
+    Este bloque de código siempre sera ejecutado, independientemente de si existe o no una excepción el el try:
+    Será ejecutado si:
+    1. Normalmente, cuando se alcanza el final del bloque try
+    2. Porque se lanze un break, continue, o return
+    3. Porque una excepción es manejada por el catch
+    4. Por una excepción no manejada que todavia se propaga
+  */
+}
+```
+
+Nota que el `catch` es acompañado de un identificador entre paréntesis. Este identificados es como el parámetro de una función. Cuando una excepción es capturada, el valor asociado a la excepción (un objeto `Error`, por ejemplo) es asignado a este parámetro. El identificador asociado con la cláusula `catch` tiene un scope de bloque, es decir, solo está definido dentro del `catch`.
+
+Si usamos el ejemplo anterior, la función de factoriales con un `try/catch/finally`:
+
+```js
+try {
+  const n = Number(prompt("Inserta un entero positivo"));
+  const f = factorial(n); // usamos la funcion factorial asumiendo que el valor de n es válido
+
+  alert(`${n}! = ${f}`);
+} catch (e) {
+  alert(e); // si el input que inicializa a n en el try es inválido y la excepción es lanzada la capturamos y mostramos por pantalla
+}
+```
+
+El anterior ejemplo no usa la cláusula `finally`. `finally` no es tan usada como `catch`, pero puede ser útil. La cláusula `finally` es ejecutada independientemente de lo que ocurra en el `try`. Es usada generalmente para limpiar después del `try`.
+
+En un caso normal, el intérprete de JS alcanzará el final del bloque `try` y procedera con el bloque `finally`, que realiza la limpieza necesaria. Si el intérprete abandona el `try` por causa de un estamento `return`, `continue` o `break`. `finally` es ejecutado antes de que el intérprete salte a su nuevo destino.
+
+Si una excepción ocurre en un bloque `try` y tiene un bloque `catch` asociado para manejar dicha excepción, el intérprete primero ejecutará el bloque `catch` y finalmente el bloque `finally`. Si no hay un bloque `catch` para manejar la excepción, el intérprete primero ejecutará el `finally` y luego saltará al `catch` más cercano en el stack de llamadas.
+
+Si un bloque `finally` causa un salto debido a un estamento `return`, `continue` o `break`, o por llamar a un método que lanza una excepción, el intérprete abandonara cualquier salto que estuviera pendiente y ejecutará uno nuevo. Por ejemplo, si una cláusula `finally` lanza una excepción, dicha excepción reemplaza a cualquiera que estuviera en proceso de ser lanzada. Si `finally` lanza un `return`, el método retorna de manera normal, incluso si hay una excepción que ha sido lanzada y no manejada de todo.
+
+`try` y `finally` pueden ser usados juntos sin `catch`. En este caso, el bloque `finally` simplemente es código de limpieza cuya ejecución está garantizada.
+
+## Otros estamento
+
+TODO: IMPLEMENTAR
+
+## Declaraciones
+
+TODO: IMPLEMENTAR
