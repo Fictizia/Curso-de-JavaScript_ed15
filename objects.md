@@ -282,3 +282,36 @@ delete Object.prototype; // => false: propiedad no configurable
 globalThis.x = 1;
 delete globalThis.x; // => false: no se puede borrar una propiedad del objeto global
 ```
+
+## Testeando propiedades
+
+TODO: IMPLEMENTAR
+
+## Extendiendo objetos
+
+TODO: IMPLEMENTAR
+
+## Serializando objetos
+
+La serialización de objetos es el proceso de convertir el estado de un objeto a un string del cual podamos restaurar el mismo posteriormente. Las funciones `JSON.stringify()` y `JSON.parse()` serializan y restaurar objetos en JS. Estas funciones usan el formato de intercambio JSON (JavaScript Object Notation) y su sintáxis es muy similar a la de los literales de los objetos y arrays de JS.
+
+```js
+const o = { x: 1, y: { z: [false, null, ""] } };
+const s = JSON.stringify(o);
+const p = JSON.parse(s);
+```
+
+La sintáxis JSON es un subset de la sintáxis de JS, y no tiene porque representar todos los valores presentes en el lenguaje. Objetos, arrays, strings, números finitos, `true`, `false` y `null` son soportados y serializados, así como restaurados. `NaN` e `(-)Infinity` son serializados a `null`. Objetos `Date` son serializados al formato ISO de fechas (`Date.toJSON()` aclará algo al respecto), pero al ser parseadas `JSON.parse()` las deja en formato string no restaurando un objeto `Date`.
+
+`Function`, `RegExp` y objetos `Error` o `undefined` **no son serializados o restaurados.**
+
+`JSON.stringify()` serializa sólo aquellas propiedades de un objeto que son enumerables y propias del objeto. Si una propiedad no puede ser serializada simplemente se omite del output final.
+Ambos `JSON.stringify()` y `JSON.parse()` aceptan un argumento secundario opcional que puede ser usado para customizar la serialización/restauración especificando una lisa de propiedades a ser serializadas, por ejemplo, o convirtiendo ciertos valores durante la serialización/restauración.
+
+## Métodos de objetos
+
+TODO: IMPLEMENTAR
+
+## Sintáxis de extensión de literales de objetos
+
+TODO: IMPLEMENTAR
