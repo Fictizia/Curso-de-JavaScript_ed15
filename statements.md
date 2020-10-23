@@ -1,16 +1,16 @@
 # Estamentos
 
-Si las expresiones en JS son frases. Los estamentos en JS son sentencias u ordenes. Tal como en nuestro lenguaje las sentencias son separadas unas de otros o terminadas, con un punto. Los estamentos en JS son terminados con punto y coma `;`. Las expresiones son evaluadas para producir un valor, pero los estamentos son **ejecutados** para hacer que algo ocurra.
+Si las expresiones en JS son frases. Los estamentos en JS son sentencias u órdenes. Tal como en nuestro lenguaje las sentencias son separadas unas de otros o terminadas, con un punto. Los estamentos en JS son terminados con punto y coma `;`. Las expresiones son evaluadas para producir un valor, pero los estamentos son **ejecutados** para hacer que algo ocurra.
 
-Una de las maneras de hacer que algo ocurra es evaluar una expresión que tiene efectos secundarios. Las expresiones con efectos sencundarios, tales como las asignaciones o las invocaciones, son por si mismas estamentos, y cuando son usadas de esa manera se las conoce como _expresiones estamento_. En una categoría parecida están los _estamentos declarativos_ que declaran nuevas variables y definen nuevas funciones.
+Una de las maneras de hacer que algo ocurra es evaluar una expresión que tiene efectos secundarios. Las expresiones con efectos sencundarios, tales como las asignaciones o las invocaciones, son por sí mismas estamentos, y cuando son usadas de esa manera se las conoce como _expresiones estamento_. En una categoría parecida están los _estamentos declarativos_ que declaran nuevas variables y definen nuevas funciones.
 
 Los programas escritos en JS no son más que una secuencia de estamentos a ejecutar. Por defecto, el intérprete de JS ejecuta dichos estamentos uno detrás del otro en el orden que fueron escritos.
 
 Otra manera de hacer que algo suceda, es alterar el orden de ejecución y JS tiene algunos estamentos o _estructuras de control_ para justo esa acción:
 
-- Condicionales: estamentos como `if` o `switch`hacen que el intérprete de JS ejecute o salte algunos estamentos dependiendo del valor de una expresión.
-- Loops: estamentos como `while` o `for` que ejecutar otros estamentos de manera repetida.
-- Saltos: estamentos como `break`, `return` y `throw` que hacen que el interprete salte de una parte a otra del programa.
+- Condicionales: estamentos como `if` o `switch` hacen que el intérprete de JS ejecute o salte algunos estamentos dependiendo del valor de una expresión.
+- Loops: estamentos como `while` o `for` que ejecutan otros estamentos de manera repetida.
+- Saltos: estamentos como `break`, `return` y `throw` que hacen que el intérprete salte de una parte a otra del programa.
 
 ## Estamentos expresión
 
@@ -40,7 +40,7 @@ TODO: IMPLEMENTAR
 
 ## Condicionales
 
-Los estamentos de condicionales ejecutan o saltan otros estamentos dependiendo del valor de una expresión específica. Estos estamentos son puntos de decisión en tu código, y son conocidos como ramificaciones. Si imaginamos al intérprete de JS siguiendo un camino a través del código, los condicionales serían lugares donde el código se ramifica en dos o más caminos y el intérprete debe elegir cual de ellos seguir.
+Los estamentos de condicionales ejecutan o saltan otros estamentos dependiendo del valor de una expresión específica. Estos estamentos son puntos de decisión en tu código, y son conocidos como ramificaciones. Si imaginamos al intérprete de JS siguiendo un camino a través del código, los condicionales serían lugares donde el código se ramifica en dos o más caminos y el intérprete debe elegir cuál de ellos seguir.
 
 ### if
 
@@ -51,7 +51,7 @@ if (expresión)
   estamento
 ```
 
-En esta forma, la expresión es evaliada. Si el resultado de la evaluación es un valor verdadero, el estamento es ejecutado. Si el resultado de la evaluación es falso, entonces no se ejecuta. Por ejemplo:
+En esta forma, la expresión es evaluada. Si el resultado de la evaluación es un valor verdadero, el estamento es ejecutado. Si el resultado de la evaluación es falso, entonces no se ejecuta. Por ejemplo:
 
 ```js
 if (username == null) {
@@ -63,7 +63,7 @@ if (username == null) {
 if (username == null) username = "Iván Zamarro";
 ```
 
-Los parentesis alrededor de la expresión a evaluar, **son requeridos** y son parte de la sintáxis de `if`.
+Los paréntesis alrededor de la expresión a evaluar, **son requeridos** y son parte de la sintáxis de `if`.
 
 Aunque JS requiere en sus `if` al menos un estamento, podemos usar un bloque de estamento para combinar múltiples en uno.
 
@@ -83,14 +83,14 @@ else
   estamento2
 ```
 
-Esta forma de estamento ejecuta el primer estamento si la expresión es verdadera y la segunda si es falsa:
+Esta forma de estamento ejecuta el primer estamento si la expresión es verdadera y el segundo si es falsa:
 
 ```js
 if (n === 1) console.log("Tienes un nuevo mensaje!");
 else console.log(`Tienes ${n} nuevos mensajes!`);
 ```
 
-Si tenemos múltiples `if` anidados con cláusulas `else`, hay que poner cuidado en asegurarse de quenuestro `else` va con el `if` apropiado:
+Si tenemos múltiples `if` anidados con cláusulas `else`, hay que poner cuidado en asegurarse de que nuestro `else` va con el `if` apropiado:
 
 ```js
 if (i === j) {
@@ -147,7 +147,7 @@ if (n === 1) {
 
 ### switch
 
-Un estamento `if` causa una ramificación en el flujo de ejecución de nuestros programas, y podemos usar su forma `else if` para realizar una multiramificación. Aunque esta no es la mejor solución cuando nuestrar ramas dependen del valor de la misma expresión. En estos casos, es un gasto de tiempo evaluar la misma expresión en múltiples `if`.
+Un estamento `if` causa una ramificación en el flujo de ejecución de nuestros programas, y podemos usar su forma `else if` para realizar una multiramificación. Aunque esta no es la mejor solución cuando nuestras ramas dependen del valor de la misma expresión. En estos casos, es un gasto de tiempo evaluar la misma expresión en múltiples `if`.
 
 El estamento `switch` maneja justo esta situación. La palabra clave `switch` es seguida de una expresión entre paréntesis y un bloque de llaves:
 
@@ -157,13 +157,13 @@ switch (expresión) {
 }
 ```
 
-Aunque su sintáxis es algo más complicada que lo anterior. En el bloque entre llaves varias variaciones son etiquetadas con la palabra clave `case` seguida de una expresión y dos puntos `:`. Cuando un `switch` se ejecuta, calcula el valor de la expresión y luego busca el `case` cuya expresión evalua al mismo valor (donde la igualdad la determina el operador `===`). Si encuentra una ejecuta el bloque de código del estamento etiquetado para ese `case`. Sino encuentra ningún `case` que coincida con dicho valor, ejecutara el estamento etiquetado como `default:`. Si no existe un `default` el `switch` sera saltado completamente.
+Aunque su sintaxis es algo más complicada que lo anterior. En el bloque entre llaves varias variaciones son etiquetadas con la palabra clave `case` seguida de una expresión y dos puntos `:`. Cuando un `switch` se ejecuta, calcula el valor de la expresión y luego busca el `case` cuya expresión evalúa al mismo valor (donde la igualdad la determina el operador `===`). Si encuentra una ejecuta el bloque de código del estamento etiquetado para ese `case`. Si no encuentra ningún `case` que coincida con dicho valor, ejecutará el estamento etiquetado como `default:`. Si no existe un `default` el `switch` será saltado completamente.
 
-`switch` es dificil de explicar, asi que refactorizemos el anterior `if/else` a un `switch`:
+`switch` es difícil de explicar, así que refactorizemos el anterior `if/else` a un `switch`:
 
 ```js
 switch (n) {
-  case 1: // empieza aqui si n === 1
+  case 1: // empieza aquí si n === 1
     // pasan cosas
     break; // para aquí
   case 2:
@@ -178,7 +178,7 @@ switch (n) {
 }
 ```
 
-La palabra `break` usada al final de cada `case` hace que el intérprete salte al final del estamento `switch` y continue con el siguiente. Cada `case` en un `switch` especifica solamente el punto de entrada del código deseado a ejecutar, no un punto de salida. Si no hay un estamento de salto `break`, entonces `switch` empieza a ejecutar primero el estamento que coincide con el valor de la expresión, pero luego continuaria ejecutando estamentos hasta que alcanzara el final del bloque. Aunque aveces este comportamiento de caer de un `case` a otro es útil, el 99% de las veces debemos preocuparnos de salir del `case`, bien sea con un `break` o un `return`.
+La palabra `break` usada al final de cada `case` hace que el intérprete salte al final del estamento `switch` y continúe con el siguiente. Cada `case` en un `switch` especifica solamente el punto de entrada del código deseado a ejecutar, no un punto de salida. Si no hay un estamento de salto `break`, entonces `switch` empieza a ejecutar primero el estamento que coincide con el valor de la expresión, pero luego continuaría ejecutando estamentos hasta que alcanzara el final del bloque. Aunque a veces este comportamiento de caer de un `case` a otro es útil, el 99% de las veces debemos preocuparnos de salir del `case`, bien sea con un `break` o un `return`.
 
 ```js
 function convert(x) {
@@ -197,7 +197,7 @@ function convert(x) {
 
 Aunque normalmente usaremos los `case` seguidos de literales de números y strings, JS permite que cada `case` sea seguido de una expresión cualquiera (aunque esto es poco útil).
 
-El estamento `switch` primero evalua la expresión que sigue a su palabra clave y luego cada expresión de `case` hasta que encuentra la que coincide. La coincidencia es determinada usando el operador de igualdad estricta `===` por lo que no habrá conversión de tipos.
+El estamento `switch` primero evalúa la expresión que sigue a su palabra clave y luego cada expresión de `case` hasta que encuentra la que coincide. La coincidencia es determinada usando el operador de igualdad estricta `===` por lo que no habrá conversión de tipos.
 
 Como no todas las expresiones `case` son evaluadas cada vez que el estamento `switch` es ejecutado, debes evitar usar expresiones en `case` que tengan efectos secundarios como asignaciones o llamadas a funciones.
 
@@ -210,29 +210,29 @@ switch (val) {
   case 1:
   case 2:
   case 3:
-    result = "1, 2, or 3";
+    result = "1, 2, o 3";
     break;
   case 4:
-    result = "4 alone";
+    result = "4 solo";
 }
 ```
 
 ## Loops
 
-Para entender los estamentos condicionales, hemos imaginado al intérprete de js siguiendo un camino ramificado a través de nuestro código. Los estamentos de loop son aquellos que doblan dicho camino sobre si mismo para repetir porciones del código. JS tiene 5 tipos de loops: `while`, `do/while`, `for`, `for/of`-(`for/await`), `for/in`. Un uso muy común de ellos es iterar sobre elementos de un array.
+Para entender los estamentos condicionales, hemos imaginado al intérprete de JS siguiendo un camino ramificado a través de nuestro código. Los estamentos de loop son aquellos que doblan dicho camino sobre sí mismo para repetir porciones del código. JS tiene 5 tipos de loops: `while`, `do/while`, `for`, `for/of`-(`for/await`), `for/in`. Un uso muy común de ellos es iterar sobre elementos de un array.
 
 ### while
 
-El estamento `while` es el loop básico de JS. Tiene la siguiente sintáxis:
+El estamento `while` es el loop básico de JS. Tiene la siguiente sintaxis:
 
 ```text
-while(expression)
+while(expresión)
   estamento
 ```
 
-Para ejecutar el estamento `while` el intérprete primero evalua la expresión. Si el valor de la expresión es falso, entonces el intérprete salta sobre dicho estamento y pasa al siguiente sin ejecutar el cuerpo del `while`. Si es cierto, el intérprete ejecutara el estamento y repetira, evaluando la expresión de nuevo. Es decir, ejecutará de manera repetida el estamento mientras la expresión sea cierta. Con lo cual podemos crear loops infinitos con `while(true)`.
+Para ejecutar el estamento `while` el intérprete primero evalúa la expresión. Si el valor de la expresión es falso, entonces el intérprete salta sobre dicho estamento y pasa al siguiente sin ejecutar el cuerpo del `while`. Si es cierto, el intérprete ejecutará el estamento y repetirá, evaluando la expresión de nuevo. Es decir, ejecutará de manera repetida el estamento mientras la expresión sea cierta. Con lo cual podemos crear loops infinitos con `while(true)`.
 
-Normalmente no queremos que JS repita la misma operación de manera continua. En casi todos los loop, una o más variables cambian en cada iteración. En el momento en el que las variables cambian, cada acción ejecutada en el cuerpo del loop, el estamento, puede diferir en cada iteración. Iendo más lejos, si el cambio de variable o variables involucra a la expresión del `while`, el valor de la expresión diferira en cada iteración. Esto es importante, puesde otra manera una expresión que comienza cierta podria no cambiar nunca y el loop no terminaría.
+Normalmente no queremos que JS repita la misma operación de manera continua. En casi todos los loop, una o más variables cambian en cada iteración. En el momento en el que las variables cambian, cada acción ejecutada en el cuerpo del loop, el estamento, puede diferir en cada iteración. Yendo más lejos, si el cambio de variable o variables involucra a la expresión del `while`, el valor de la expresión diferirá en cada iteración. Esto es importante, pues de otra manera una expresión que comienza cierta podría no cambiar nunca y el loop no terminaría.
 
 ```js
 let count = 0;
@@ -248,36 +248,36 @@ TODO: Implementar
 
 ### for
 
-El estamento `for` provee un constructor de loop que suele ser mas conveniente que el de `while`. `for` simplifica los loops que sigen un patrón común. Muchos loops tienen una variable contador de algún tipo. Esta variable es inicializada antes de que empieze el loop y testeada antes de cada iteración del loop. Finalmente, la variable contador es incrementada o actualizada al final cuerpo del loop, justo antes de que la variable sea testeada de nuevo. En este tipo de loops, la inicialización, el testeo y la actualización son las tres manipulaciones cruciales sobre la variable del loop. El estamento `for` enclausula estas tres manipulaciones como expresiones y hace de esas expresiones parte de la sintaxis del loop:
+El estamento `for` provee un constructor de loop que suele ser más conveniente que el de `while`. `for` simplifica los loops que siguen un patrón común. Muchos loops tienen una variable contador de algún tipo. Esta variable es inicializada antes de que empiece el loop y testeada antes de cada iteración del loop. Finalmente, la variable contador es incrementada o actualizada al final cuerpo del loop, justo antes de que la variable sea testeada de nuevo. En este tipo de loops, la inicialización, el testeo y la actualización son las tres manipulaciones cruciales sobre la variable del loop. El estamento `for` enclausula estas tres manipulaciones como expresiones y hace de esas expresiones parte de la sintaxis del loop:
 
 ```text
-for (inicializacion; test; incremento)
+for (inicialización; test; incremento)
   estamento
 ```
 
-La inicialización, testeo e incremento son tres expresiones, separadas por `;` que son responsables de manipular la variable del loop. Poniendolas todas al inicio de la primera línea del loop se hace más fácil de entender que hace el `for` y previene errores como evitar inicializar o incrementar la variable del loop.
+La inicialización, testeo e incremento son tres expresiones, separadas por `;` que son responsables de manipular la variable del loop. Poniéndolas todas al inicio de la primera línea del loop se hace más fácil de entender qué hace el `for` y previene errores como evitar inicializar o incrementar la variable del loop.
 
 A nivel del switch sería como:
 
 ```text
-inicializacion;
+inicialización;
 while(test) {
   estamento;
   incremento;
 }
 ```
 
-En otras palabras, la expresión de inicialización es evaluada una vez, antes de que el loop empieze. Para ser útil, esta expresión debe tener efectos secundarios, normalmente una asignación. JS también permite que la inicialización sea la declaración de una variable de tal manera que puedes declarar e inicializar la variable del loop al mismo tiempo. La expresión de testeo es evaluada antes de cada iteración y controla cuando el cuerpo del loop debe ser ejecutado. Sólo será ejecutado si el test evalua a un valor cierto. Finalmente la expresión de incremento es evaluada, debe ser una vez más una expresión con efectos secundarios para ser útil. Normalmente se usa una expresión de asignación, usando los operadores `++` o `--`.
+En otras palabras, la expresión de inicialización es evaluada una vez, antes de que el loop empiece. Para ser útil, esta expresión debe tener efectos secundarios, normalmente una asignación. JS también permite que la inicialización sea la declaración de una variable de tal manera que puedes declarar e inicializar la variable del loop al mismo tiempo. La expresión de testeo es evaluada antes de cada iteración y controla cuándo el cuerpo del loop debe ser ejecutado. Sólo será ejecutado si el test evalúa a un valor cierto. Finalmente la expresión de incremento es evaluada, debe ser una vez más una expresión con efectos secundarios para ser útil. Normalmente se usa una expresión de asignación, usando los operadores `++` o `--`.
 
 ```js
-// imprime los numeros del 0 al nueve
+// imprime los números del 0 al 9
 
 for (let count = 0; count < 10; count++) {
   console.log(count);
 }
 ```
 
-Los loops pueden ser mucho más complejos que el anterior ejemplo, y hay veces que más de una variable cambia en cada iteración. Esta situación es el único ligar donde el operador por coma es muy usado en JS, provee una manera de combinar múltiples inicializaciones y expresiones de incremento en una sola expresión capaz de usarse en un loop `for`:
+Los loops pueden ser mucho más complejos que el anterior ejemplo, y hay veces que más de una variable cambia en cada iteración. Esta situación es el único lugar donde el operador por coma es muy usado en JS, provee una manera de combinar múltiples inicializaciones y expresiones de incremento en una sola expresión capaz de usarse en un loop `for`:
 
 ```js
 let i,
@@ -327,7 +327,7 @@ function multiply(arr, n) {
 }
 ```
 
-La versión recursiva de `multiply` se descompone así. En el caso base, donde `n <= 0`, devuelve 1. Para valores más grandes de n, se llama a sí mismo, pero con `n - 1`. Esa llamada de función se evalúa de la misma manera, llamando a `multiolay` nuevamente hasta que `n <= 0`. En este punto, todas las funciones pueden retornar y la `multiply` original devuelve la respuesta.
+La versión recursiva de `multiply` se descompone así. En el caso base, donde `n <= 0`, devuelve 1. Para valores más grandes de n, se llama a sí mismo, pero con `n - 1`. Esa llamada de función se evalúa de la misma manera, llamando a `multiply` nuevamente hasta que `n <= 0`. En este punto, todas las funciones pueden retornar y la `multiply` original devuelve la respuesta.
 
 _Nota: Las funciones recursivas deben tener un caso base cuando regresan sin llamar a la función nuevamente (en este ejemplo, cuando `n <= 0`), de lo contrario nunca podrán terminar de ejecutarse._
 
@@ -336,6 +336,7 @@ _Lee: [El siguiente enlace](https://portfoliostuff-parenttobias.codeanyapp.com/2
 ### for/of
 
 ES6 define un nuevo estamento de loop `for/of`. Este estamento es completamente diferente al loop `for` común.
+
 El loop `for/of` trabaja con objetos iterables. Arrays, strings, sets y maps son iterables: representan secuencias de conjuntos de elementos sobre los que puedes iterar usando un loop `for/of`.
 
 Por ejemplo, para iterar sobre los elementos de un array de números y calcular su suma:
@@ -351,11 +352,11 @@ for (let element of data) {
 sum; // => 45
 ```
 
-La sintáxis es parecida a la de un loop `for`: la palabra `for` seguida de paréntesis que contienen detalles sobre qué debe hacer el loop. En este caso, los paréntesis contienen una declaración de variables (al igual que un loop `for` pueden ser variables ya declaradas, usaríamos simplemente su nombre) seguido de la palabra `of` y una expresión que debe evaluar a un objeto iterable, como `data` en este caso. El cuerpo del loop `for/of` sigue a los paréntesis entre llaves, como en cualquier otro loop.
+La sintaxis es parecida a la de un loop `for`: la palabra `for` seguida de paréntesis que contienen detalles sobre qué debe hacer el loop. En este caso, los paréntesis contienen una declaración de variables (al igual que un loop `for` pueden ser variables ya declaradas, usaríamos simplemente su nombre) seguido de la palabra `of` y una expresión que debe evaluar a un objeto iterable, como `data` en este caso. El cuerpo del loop `for/of` sigue a los paréntesis entre llaves, como en cualquier otro loop.
 
 En el anterior código, el cuerpo del loop es ejecutado por cada elemento del array `data`. Antes de cada ejecución del cuerpo del loop, el siguiente elemento del array es asignado a la variable. Los elementos del array son iterados en orden de principio hasta el final.
 
-Los arrays son iterados en vivo, cualquier cambio realizado durante la iteración afectará al resultado Si moficamos el anterior código y añadimos la línea `data.push(sum);` en el cuerpo del loop, entonces crearemos un loop infinito porque nunca alcanzamos el final del array.
+Los arrays son iterados en vivo, cualquier cambio realizado durante la iteración afectará al resultado Si modificamos el anterior código y añadimos la línea `data.push(sum);` en el cuerpo del loop, entonces crearemos un loop infinito porque nunca alcanzamos el final del array.
 
 #### for/of con objetos
 
@@ -409,7 +410,8 @@ TODO: IMPLEMENTAR
 
 ### for/in
 
-Un bucle `for/in` trabaja con cualquier objeto despues del `in`.
+Un bucle `for/in` trabaja con cualquier objeto después del `in`.
+
 El estamento `for/in` itera a través de los nombres de propiedades de un objeto específico.
 
 ```text
@@ -417,7 +419,7 @@ for (variable in object)
   estamento
 ```
 
-`variable` suele referirse al nombre de una variable, pero puede ser la declaración de una variable o cualquier cosa configurable como el lado izquierdo de una expresión de asignación. `object` es una expresión que debe evaluar a un objeto. Y como siempre `estamento` es el blo que que sirve como cuerpo del loop:
+`variable` suele referirse al nombre de una variable, pero puede ser la declaración de una variable o cualquier cosa configurable como el lado izquierdo de una expresión de asignación. `object` es una expresión que debe evaluar a un objeto. Y como siempre `estamento` es el bloque que sirve como cuerpo del loop:
 
 ```js
 for (let p in o) {
@@ -427,7 +429,7 @@ for (let p in o) {
 
 Para ejecutar un estamento `for/in`, el intérprete de JS primero evalua la expresión de objeto. Si esta es `null` o `undefined`, el intérprete saltará el loop completamente. Al ejecutar el cuerpo del loop, lo hará una vez por cada propiedad enumerable del objeto. Antes de cada iteración, el intérprete evaluará la expresión `variable` y asignará el nombre de la propiedad, un string, a ella.
 
-Destacara que la `variable` en un loop `for/in` puede ser una expresión cualquiera, mientras evalue a algo que puede asignarse. Esta expresión es evaluada vada vez que iteramos el loop, lo que signifíca que puede ser diferente cada vez. Por ejemplo, para copiar todos los nombres de propiedades de un objeto en un array:
+Destacar que la `variable` en un loop `for/in` puede ser una expresión cualquiera, mientras evalúe a algo que puede asignarse. Esta expresión es evaluada cada vez que iteramos el loop, lo que significa que puede ser diferente cada vez. Por ejemplo, para copiar todos los nombres de propiedades de un objeto en un array:
 
 ```js
 const o = {x: 1, y: 2, z: 3}
@@ -439,7 +441,7 @@ for (a[i++] in o)
 
 Aunque este tipo de bucles se puede usar con arrays, es preferible no hacerlo.
 
-Hay que tener en cuenta que el bucle `for/in` no siempre enumera todas las propiedades de un objeto. Por ejemplo esto no ocurrirá si estas son `Symbol`. Y para aquellas propiedades cuyos nombres son strings, solo lo hará si son enumerables. Muchos métodos definidos en el core de JS no son enumerables. Todos los objetos tienen un método `toString()` pero `for/in` no los enumerará. Como regla general, todas las propiedades y métodos definidos por nuestro código son enumerables por defecto, pero no está garantizado que en los objetos de js esto se cumpla.
+Hay que tener en cuenta que el bucle `for/in` no siempre enumera todas las propiedades de un objeto. Por ejemplo esto no ocurrirá si estas son `Symbol`. Y para aquellas propiedades cuyos nombres son strings, solo lo hará si son enumerables. Muchos métodos definidos en el core de JS no son enumerables. Todos los objetos tienen un método `toString()` pero `for/in` no los enumerará. Como regla general, todas las propiedades y métodos definidos por nuestro código son enumerables por defecto, pero no está garantizado que en los objetos de JS esto se cumpla.
 
 Las propiedades enumerables heredadas también serán enumeradas por el loop `for/in`. Esto significa que usando un `for/in` en código que hace uso de propiedades heredadas por todos los objetos, puede dar comportamientos no esperados. Por eso muchos programadores prefieren usar un bucle `for/of` con `Object.keys()` en vez de un `for/in`.
 
@@ -447,9 +449,9 @@ Si el cuerpo de un `for/in` elimina una propiedad que no ha sido enumerada todav
 
 ## Saltos
 
-Otra categoría de los estamentos de JS son los saltos. Como su nombre implica, estos causan que el interprete de JS salte a una nueva localización en el código. El estamento `break` hace que el intérprete salte al final del loop o de otro estamento. `continue` hace que el intérprete pase del resto del cuerpo de un loop y vuelva al principio del mismo a empezar una nueva iteración. A su vez JS, permite etiquetar estamentos, de tal manera que `break` y `continue` puedan identificar el loop objetivo a saltar u otro estamento.
+Otra categoría de los estamentos de JS son los saltos. Como su nombre implica, estos causan que el intérprete de JS salte a una nueva localización en el código. El estamento `break` hace que el intérprete salte al final del loop o de otro estamento. `continue` hace que el intérprete pase del resto del cuerpo de un loop y vuelva al principio del mismo a empezar una nueva iteración. A su vez JS permite etiquetar estamentos, de tal manera que `break` y `continue` puedan identificar el loop objetivo a saltar u otro estamento.
 
-El estamento `return` hace que el intérprete salte de la invocación de una función de vuelta al código que la invocó y a su vez remite el valor de la invocación a dicha función. El estamento `throw` es una especie de generador dentro de una función, lanzando una exepción y es diseñado para trabajar con estamentos `try/catch/finally`, los cuales nos permiten establecer bloques de código donde manejar errores. Es un estamento de salto complicado, pues cuando una excepción es lanzada el intérprete saltará al manejador más cercano, que puede estar dentro de la misma función o en el stack que rodea a la invocación dela misma.
+El estamento `return` hace que el intérprete salte de la invocación de una función de vuelta al código que la invocó y a su vez remite el valor de la invocación a dicha función. El estamento `throw` es una especie de generador dentro de una función, lanzando una excepción y es diseñado para trabajar con estamentos `try/catch/finally`, los cuales nos permiten establecer bloques de código donde manejar errores. Es un estamento de salto complicado, pues cuando una excepción es lanzada el intérprete saltará al manejador más cercano, que puede estar dentro de la misma función o en el stack que rodea a la invocación de la misma.
 
 ### Estamentos etiquetados
 
@@ -457,7 +459,7 @@ TODO: IMPLEMENTAR
 
 ### Break
 
-El estamento `break`, usado en solitario, hace que el loop o `switch` más cercano que lo envuelve termine inmediatamente. Su sintáxis es simple:
+El estamento `break`, usado en solitario, hace que el loop o `switch` más cercano que lo envuelve termine inmediatamente. Su sintaxis es simple:
 
 ```js
 break;
@@ -485,17 +487,18 @@ El estamento `continue` es similar al estamento `break`. En vez de salir de un l
 continue;
 ```
 
-Solo puede ser usado dentro de un loop, en cualquier otro lado causará un error de sintáxis.
+Solo puede ser usado dentro de un loop, en cualquier otro lado causará un error de sintaxis.
+
 Cuando el estamento `continue` se ejecuta, la iteración del loop actual finaliza, y la siguiente iteración empieza. Dependiendo del tipo de loop:
 
 TODO: Completar
 
-- En un loop `while`, la expresión al inicio del loop es testeada de nuevo y el loop empieza desde el top del mismo si esta expresión se evalua como `true`.
+- En un loop `while`, la expresión al inicio del loop es testeada de nuevo y el loop empieza desde el top del mismo si esta expresión se evalúa como `true`.
 - En un loop de tipo for, la expresión de incremento es evaluada y la expresión de test vuelta a ejecutar para determinar si la iteración debe ser realizada.
 
-La diferencia en comportamiento de `continue` entre un bucle `while` y un `for` es: que un loop `while` retorna directamente a la condición, pero el `for` evalua el incremento y retorna a la condición.
+La diferencia en comportamiento de `continue` entre un bucle `while` y un `for` es: que un loop `while` retorna directamente a la condición, pero el `for` evalúa el incremento y retorna a la condición.
 
-Hemos considerado el comportamiento de un loop `for` en terminos de equivalencia de un `while`, Como el estamento `continue` se comporta diferente entre estos dos loops, no es posible simular un `for` perfectamente como un `while` en solitario..
+Hemos considerado el comportamiento de un loop `for` en términos de equivalencia de un `while`, como el estamento `continue` se comporta diferente entre estos dos loops, no es posible simular un `for` perfectamente como un `while` en solitario..
 
 El siguiente ejemplo muestra un estamento `continue` usado para saltar el resto de la iteración si el error ocurre:
 
@@ -511,13 +514,13 @@ for (let i = 0; i < data.length; i++) {
 
 ### return
 
-Teniendo en cuenta que la invocación a funciones son expresiones y todas las expresiones evaluan a valores. Un estamento `return` dentro de una función especifica el valor de la invocación de dicha función. Su sintáxis es simple:
+Teniendo en cuenta que la invocación a funciones son expresiones y todas las expresiones evalúan a valores. Un estamento `return` dentro de una función especifica el valor de la invocación de dicha función. Su sintaxis es simple:
 
 ```js
 return expression;
 ```
 
-Un estamento `return` puede aparecer solo dentrod del cuerpo de una funcuón. Si aparece en cualquier otro lado JS lanzará un un error de sintáxis. Cuando un estamento `return` es ejecutado, la función que lo contiene retornará un el valor de la expresión al que la invoca. Por ejemplo:
+Un estamento `return` puede aparecer solo dentro del cuerpo de una función. Si aparece en cualquier otro lado JS lanzará un error de sintaxis. Cuando un estamento `return` es ejecutado, la función que lo contiene retornará un el valor de la expresión al que la invoca. Por ejemplo:
 
 ```js
 function square(x) {
@@ -527,7 +530,7 @@ function square(x) {
 square(2); // => 4
 ```
 
-Cuando uno existe dicho estamento `return`, la función al ser invocada simplemente ejecuta cada estamento de su cuerpo de uno en uno hasta que alcanza el final de la misma y retorna el control a quien la invoca. En este caso, la expresión de invocación siempre evaluará a `undefined`. El estamento `return` normalmente aparece como el último estamento de una función, pero no es necesario: la función retorna el control a su invocador cuando `return` es ejecutado, independientemente de si quedan estamentos por ejecutar en su cuerpo.
+Cuando existe dicho estamento `return`, la función al ser invocada simplemente ejecuta cada estamento de su cuerpo de uno en uno hasta que alcanza el final de la misma y retorna el control a quien la invoca. En este caso, la expresión de invocación siempre evaluará a `undefined`. El estamento `return` normalmente aparece como el último estamento de una función, pero no es necesario: la función retorna el control a su invocador cuando `return` es ejecutado, independientemente de si quedan estamentos por ejecutar en su cuerpo.
 
 El estamento `return` puede ser usado sin expresión para hacer que una función retorne `undefined` a su invocador, por ejemplo:
 
@@ -545,22 +548,22 @@ No se pueden meter saltos de línea entre el return y su expresión.
 
 ### throw
 
-Una excepción es una señal que indica alguna clase de condicion excepcional o error que ocurre en el código. Lanzar una excepción es como señalizar un error o dicha condición excepcional. Capturar la excepción y manejarla significa tomar las acciones necesarias para recuperarse de dicha excepción. En JS, las ecepciones son lanzadas donde quiera que un error en tiempo de ejecución ocurra o donde un estamento `throw` esté implementado. Las excepciones son capturadas con el estamento `try/catch/finally`.
+Una excepción es una señal que indica alguna clase de condición excepcional o error que ocurre en el código. Lanzar una excepción es como señalizar un error o dicha condición excepcional. Capturar la excepción y manejarla significa tomar las acciones necesarias para recuperarse de dicha excepción. En JS, las excepciones son lanzadas donde quiera que un error en tiempo de ejecución ocurra o donde un estamento `throw` esté implementado. Las excepciones son capturadas con el estamento `try/catch/finally`.
 
-La sintáxis de un `throw` es:
+La sintaxis de un `throw` es:
 
 ```text
 throw expresión;
 ```
 
-La expresión puede evaluarse a un valor de cualquier tipo. Puedes lanzar un número que representa un código de error o un string que contiene un mensaje legible por otros programadores. La clase `Error` y sus subclases son usadas cuando el intérprete JS lanza un error por si mismo y también podemos usarlas nosotros. Un objeto `Error` tiene una propiedad llamada `name` que especifica el tipo de error y una propiedad `message` que guarda el string pasado al constructor de la función.
+La expresión puede evaluarse a un valor de cualquier tipo. Puedes lanzar un número que representa un código de error o un string que contiene un mensaje legible por otros programadores. La clase `Error` y sus subclases son usadas cuando el intérprete JS lanza un error por sí mismo y también podemos usarlas nosotros. Un objeto `Error` tiene una propiedad llamada `name` que especifica el tipo de error y una propiedad `message` que guarda el string pasado al constructor de la función.
 
 ```js
 function factorial(x) {
   if (x < 0) {
     throw new Error("x must not be negative"); // se lanza una excepción ante un argumento inválido
   }
-  // de otra manera se continua computando el valor de retorno
+  // de otra manera se continúa computando el valor de retorno
   let f;
   for (f = 1; x > 1; f *= x, x--);
 
@@ -568,7 +571,7 @@ function factorial(x) {
 }
 ```
 
-Cuando una excepción es lanzada, el intérprete de JS finaliza inmediatamente la ejecución del programa y salta a manejador de excepción más cercano. Los manejadores de excepciones se escriben usando las cláusulas `catch` del estamento `try/catch/finally`. Si el bloque de código que lanza la excepción no esta asociada a una cláusula `catch`, el intérprete busca el código que la envuelve para comprobar si existe un manejadore de excepción.
+Cuando una excepción es lanzada, el intérprete de JS finaliza inmediatamente la ejecución del programa y salta a manejador de excepción más cercano. Los manejadores de excepciones se escriben usando las cláusulas `catch` del estamento `try/catch/finally`. Si el bloque de código que lanza la excepción no esta asociada a una cláusula `catch`, el intérprete busca el código que la envuelve para comprobar si existe un manejador de excepción.
 
 En otras palabras, si la excepción se lanza en una función que no contiene un estamento `try/catch/finally` que la maneje esta es propagada a lo largo del bloque que la invoca. Si al propagarse en la cadena de invocaciones, no se encuentra ningún manejador, la excepción es tratada como un error y reportada al usuario.
 
@@ -580,7 +583,7 @@ El estamento `try/catch/finally` es un mecanismo de manejo de excepciones en JS.
 try {
   /*
     Normalmente este código es ejecutado sin problemas, pero hay veces que una excepción es lanzada, 
-    bien de manera directa o bien porque parte del código del bloqe use alguna función que la lanza.
+    bien de manera directa o bien porque parte del código del bloque use alguna función que la lanza.
   */
 } catch (e) {
   /*
@@ -590,17 +593,17 @@ try {
   */
 } finally {
   /*
-    Este bloque de código siempre sera ejecutado, independientemente de si existe o no una excepción el el try:
+    Este bloque de código siempre será ejecutado, independientemente de si existe o no una excepción en el try:
     Será ejecutado si:
     1. Normalmente, cuando se alcanza el final del bloque try
-    2. Porque se lanze un break, continue, o return
+    2. Porque se lance un break, continue, o return
     3. Porque una excepción es manejada por el catch
-    4. Por una excepción no manejada que todavia se propaga
+    4. Por una excepción no manejada que todavía se propaga
   */
 }
 ```
 
-Nota que el `catch` es acompañado de un identificador entre paréntesis. Este identificados es como el parámetro de una función. Cuando una excepción es capturada, el valor asociado a la excepción (un objeto `Error`, por ejemplo) es asignado a este parámetro. El identificador asociado con la cláusula `catch` tiene un scope de bloque, es decir, solo está definido dentro del `catch`.
+Nota que el `catch` es acompañado de un identificador entre paréntesis. Este identificador es como el parámetro de una función. Cuando una excepción es capturada, el valor asociado a la excepción (un objeto `Error`, por ejemplo) es asignado a este parámetro. El identificador asociado con la cláusula `catch` tiene un scope de bloque, es decir, solo está definido dentro del `catch`.
 
 Si usamos el ejemplo anterior, la función de factoriales con un `try/catch/finally`:
 
@@ -617,11 +620,11 @@ try {
 
 El anterior ejemplo no usa la cláusula `finally`. `finally` no es tan usada como `catch`, pero puede ser útil. La cláusula `finally` es ejecutada independientemente de lo que ocurra en el `try`. Es usada generalmente para limpiar después del `try`.
 
-En un caso normal, el intérprete de JS alcanzará el final del bloque `try` y procedera con el bloque `finally`, que realiza la limpieza necesaria. Si el intérprete abandona el `try` por causa de un estamento `return`, `continue` o `break`. `finally` es ejecutado antes de que el intérprete salte a su nuevo destino.
+En un caso normal, el intérprete de JS alcanzará el final del bloque `try` y procederá con el bloque `finally`, que realiza la limpieza necesaria. Si el intérprete abandona el `try` por causa de un estamento `return`, `continue` o `break`. `finally` es ejecutado antes de que el intérprete salte a su nuevo destino.
 
 Si una excepción ocurre en un bloque `try` y tiene un bloque `catch` asociado para manejar dicha excepción, el intérprete primero ejecutará el bloque `catch` y finalmente el bloque `finally`. Si no hay un bloque `catch` para manejar la excepción, el intérprete primero ejecutará el `finally` y luego saltará al `catch` más cercano en el stack de llamadas.
 
-Si un bloque `finally` causa un salto debido a un estamento `return`, `continue` o `break`, o por llamar a un método que lanza una excepción, el intérprete abandonara cualquier salto que estuviera pendiente y ejecutará uno nuevo. Por ejemplo, si una cláusula `finally` lanza una excepción, dicha excepción reemplaza a cualquiera que estuviera en proceso de ser lanzada. Si `finally` lanza un `return`, el método retorna de manera normal, incluso si hay una excepción que ha sido lanzada y no manejada de todo.
+Si un bloque `finally` causa un salto debido a un estamento `return`, `continue` o `break`, o por llamar a un método que lanza una excepción, el intérprete abandonará cualquier salto que estuviera pendiente y ejecutará uno nuevo. Por ejemplo, si una cláusula `finally` lanza una excepción, dicha excepción reemplaza a cualquiera que estuviera en proceso de ser lanzada. Si `finally` lanza un `return`, el método retorna de manera normal, incluso si hay una excepción que ha sido lanzada y no manejada de todo.
 
 `try` y `finally` pueden ser usados juntos sin `catch`. En este caso, el bloque `finally` simplemente es código de limpieza cuya ejecución está garantizada.
 
