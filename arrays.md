@@ -201,6 +201,240 @@ Por último el metodo `splice()`es el metodo de proposito general para insertar,
 
 ## Iterando arrays
 
-TODO: IMPLEMENTAR
+El modo más semcillo de iterar sobre los elementos de un array (o cualquier objeto iterable) es el loop `for/of`.
+
+```js
+const letters = ["H", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"];
+let string = "";
+
+for (let letter of letters) {
+  string += letter;
+}
+
+letter; // "Hello world"; recomponemos el texto original
+```
+
+El iterador `for/of` nos va a recorrer el array en orden de index ascendente. No tiene otro comportamiento especial para los arrays dispersos y simplemente retorna `undefined` en aquellos elementos que no existen.
+
+Si queremos usar un `for/of` en un array y necesitamos conocer el índice de cada elemento del array, podemos usar el método `entries()` del array, junto a la desestructuración:
+
+```js
+for (let [index, letter] of letters.entries()) {
+  // {...}
+}
+```
+
+Otra manera de iterar un array es con el método `forEach()`. Este es un método de los arrays que ofrece una aproximación funcional a la iteración de los mismos. Podemos pasar una función a `forEach()` y este invocará nuestra función una vez en cada elemento del array:
+
+```js
+let sum = 0;
+[1, 2, 3, 4, 5].forEach((n) => (sum += n));
+```
+
+`forEach()` itera el array en orden y pasa el elemento como primer argumento a nuestra función y el index como segundo elemento a nuestra función, lo cual puede ser útil. A diferencia de `for/of`, este método, no invoca tu función sobre elementos que no existen como los de los arrays dispersos.
+
+Por supuesto es posible iterar un array en JS con un loop `for` tradicional:
+
+```js
+const arr = [1, 2, 3, 4, 5];
+
+for (let i = 0; i < arr.length; i++) {
+  const element = arr[i];
+  // {...}
+}
+```
+
+En loops anidados o contextos donde el rendimiento es crítico, es clásico utilizar este tipo de arrays que sólo consultan la longitud del mismo una sola vez, pero no está claro que en intérpretes modernos de JS tenga un impacto significativo sobre el rendimiento.
 
 ## Arrays multidimensionales
+
+TODO: IMPLEMENTAR
+
+## Métodos de array
+
+### Métodos de iteración en arrays
+
+Los siguientes métodos, son métodos que ofrecen los objetos array, iteran sobre el arrary aceptando una función que debemos programar y permiten mapear, filtrar, testear o reducir arrays.
+
+La función que entregamos, es invocada cada vez sobre cada elemento del array o sobre algunos de ellos. Si el array es disperso, esta función no se invoca sobre elementos que no existen. La función, en la mayoría de casos es invocada con 3 argumentos: el valor del elemento en el array, su index, y el array en si mismo. Ninguno de los siguientes métodos modifican el array.
+
+#### forEach()
+
+El método `forEach()` itera a través del array, invocando una función especificada para cada elemento. Esta función es el primer argumento de `forEach()`. `forEach()` invoca la función con tres argumentos: el valor del elemento en el array, su index, y el array en si mismo. Si sólo necesitamos el valor del elemento del array, podemos escribir nuestra función con un único parámetro, y el resto serán ignorados:
+
+```js
+let sum = 0;
+const data = [1, 2, 3, 4, 5];
+
+data.forEach((value) => (sum += value)); // suma el valor de cada elemento del array en sum
+
+// Incrementando el valor de cada elemento
+data.forEach((value, index, array) => (array[i] = v + 1));
+```
+
+`forEach` no provee ninguna manera de terminar la iteración antes de que todos los elementos hayan terminado de pasar por nuestra función. Es decir, no hay equivalente a `break` como en los `for`.
+
+#### map()
+
+El método `map()` pasa cada elemento del array en el que es invocado a la funcion que especificamos y retorna un nuevo array conteniendo los valores retornados por tu función:
+
+```js
+const a = [1, 2, 3];
+const mapped = a.map((value) => value * value);
+
+mapped; // => [1,4,9]: la funcion toma el value y retorna value*value
+```
+
+La función que proveemos a `map()` es invocada de la misma manera que la función pasada a `forEach()`. Pero para `map()`, la función que pasamos debe retornar un valor, a diferencia de `forEach()`. `map()` siempre returna un nuevo array: no modifica el array original sobre el que lo invocamos. Si el array es disperso, la función no es llamada sobre los elementos no existentes, pero el array retornado estará disperso de la misma manera que el original: tendrá el mismo length y los mismos elementos no existentes.
+
+#### filter()
+
+El método `filter()` retorna un array conteniendo un subconjunto de elementos del array original sobre el que lo invocamos. La función que le proveemos al método `filter()` debe ser un predicado: retorna `true` o `false`. El predicado es invocado igual que `forEach()` o `map()`, sobre cada elemento del array. Si el valor de retorno es `true` o convierte a `true` entonces ese elemento pasa el predicado y se convierte en miembro del subset, siendo añadido al array que nos retornará `filter()`.
+
+```js
+const a = [5, 4, 3, 2, 1];
+a.filter((value) => value < 3); // => [2,1]: filtra valores inferiores a 3
+a.filter((value) => value % 2 === 0); // => [2,4]: filtra valores pares
+```
+
+`filter()` salta los elementos de un array disperso que no existen y siempre retorna un array denso. Si queremos filtrar los gaps en un array disperso podemos hacer:
+
+```js
+const dense = sparseArr.filter((x) => x != null);
+```
+
+#### find() y findIndex()
+
+`find() y findIndex()` son métodos que como `filter()` iteran sobre el array buscando aquellos elementos que cumplen el predicado de nuestra función. Pero a diferencia de `filter()`, estos dos metodos paran de iterar en el primer momento que encuentran un elemento que cumple el predicado. Cuando esto ocurre `find()` retorna el elemento que cumple el predicado, y `findIndex()` retorna el index de dicho elemento. Si no se encuentra ningun elemento que cumpla el predicado `find()` retorna `undefined` y `findIndex()` retorna `-1`:
+
+```js
+const a = [1, 2, 3, 4, 5];
+a.findIndex((value) => value === 3); // => 2; el valor 3 aparece en el index 2
+a.findIndex((value) => value < 0); // => -1; no tenemos números negativos en el array
+a.find((value) => value % 5 === 0); // 5: es el primer mútiplo de 5
+a.find((value) => value % 7 === 0); // undefined: no hay múltiplos de 7 en el array
+```
+
+#### every() y some()
+
+TODO: Implementar
+
+#### reduce() y reduceRight()
+
+Los métodos `reduce()` y `reduceRight()` combinan los elementos de un array, usando la función que pasamos, para producir un único valor. Es una operación muy común en programación funcional y recibe también los nombres de "inject" o "fold".
+
+```js
+const a = [1, 2, 3, 4, 5];
+
+a.reduce((acc, value) => value + acc, 0); // 15: suma de valores
+a.reduce((acc, value) => value * acc, 1); // 120: producto de valores
+a.reduce((acc, value) => (value > acc ? value : acc)); // 120: producto de valores
+```
+
+`reduce()` toma dos argumentos. El primero es la función que realiza la operación de reducción. La tarea de dicha función es combinar de alguna manera o reducer dos valores en uno sólo y retornar dicho valor reducido. En los ejemplos, la función combina dos valores sumándolos, multiplicandolos o eligiendo el más largo. El segundo argumento, opcional, es el valor inicial que se le pasa a la función.
+
+Las funciones que pasamos a `reduce()` son diferentes que las funciones usadas con `forEach()` y `map()`. Los valores, index y el array en sí mismo son el segundo, tercero y cuarto argumento que nuestra función de reducción recibirá. El primer argumento es el resultado acumulado de la reducción en cada iteración. En la primera llamada a la función, el primer argumento es el valor inicial que hemos pasado como segundo argumento a `reduce()`. En llamadas subsecuentes, este valor es el retornado por la invocación previa de la función reductora.
+
+En el primer ejemplo, la función de reducción es llamada con los argumentos `0` y `1`. Los suma y retorna `1`. Después es llamada de nuevo con los argumentos `1` y `2` retornando `3`. Luego calcula `3+3=6`, luego `6+4=10` y finalmente `10+5=15`. El valor final, `15` se convierte en el valor que retorna `reduce()`.
+
+Si nos fijamos en el tercer ejemplo, solo hay un argumento pasado a `reduce()`, no hay valor inicail. Cuando invocamos `reduce()` de esta forma, usa el primer elemento del array como valor inicial. Esto significa que la primera llamada a tu función de reducción, tendrá el primer y segundo elementos del array como primer y segundo argumentos. En los dos primero ejemplos, podríamos haber omitido el valor inicial.
+
+TODO: Implementar reduceRight()
+
+### Aplanando arrays con flat() y flatMap()
+
+TODO: Implementar
+
+### Añadiendo arrays con concat()
+
+TODO: Implementar
+
+### Stacks y colas con push(), pop(), shift() y unshift()
+
+Los métodos `push()` y `pop()` nos permiten trabajar con arrays como si fueran stacks. El método `push()` añade uno o más elementos al final del array y retorna el length del array. A diferencia de `concat()` no aplana aquellos argumentos que son arrays. El método `pop()` hace el contrario: elimina el último elemento del array, decrementando el length y retorna el elemento eliminado. Ambos métodos modifican el array. Estos métodos permiten usar los arrays de JS como un stack (first-in, last-out):
+
+```js
+const stack = [];
+stack.push(1, 2); // [1,2]
+stack.pop(); // [1] retorna 2
+```
+
+TODO: implementar con spread operator
+
+Los métodos `unshift()` y `shift()` se comportan parecido a los métodos `push()` y `pop()`, excepto que insertan y eliminan elementos del inicio del array en vez del final.
+
+`unshift()` añade elementos al inicio del array y `shift()` elimina y retorna el primer elemento del array.
+
+TODO: AMPLIAR
+
+### Subarrays con slice(), splice(), fill() y copyWithin()
+
+TODO: Implementar
+
+### Métodos de búsqueda y ordenado de arrays
+
+TODO: Implementar
+
+#### indexOf() y lastIndexOf()
+
+TODO: Implementar
+
+#### includes()
+
+El método `includes()`, introducido en ES2016, toma un único argumento y retorna `true` si el array contiene el valor o `false` de otra manera. No te dice el index del valor, solo si existe. El método `includes()` es parte de los métodos set de testing de arrays.
+
+TODO: Ampliar
+
+```js
+const a = [1, true, "foo"];
+a.includes(true); // true
+a.includes("bar"); // false
+```
+
+#### sort()
+
+`sort()` ordena los elementos de un array y retorna el array ordenado. Cuando `sort()` es llamado sin argumentos, ordena los elementos en orden alfabético (convirtiendo a string aquellos que no lo son para la comparación):
+
+```js
+const a = ["banana", "cherry", "apple"];
+a.sort(); // => ["apple", "banana", "cherry"]
+```
+
+Si un array contiene elementos `undefined`, son ordenados al final del array.
+
+Para ordenar un array de otra manera que alfabéticamente, debemos pasar una función de comparación como primer argumento de `sort()`.
+Esta función decidirá cual de sus dos argumentos debe aparecer primero en el array ordenado. Si el primer argumento debe aparecer antes que el segundo, la función de comparación debe retornar un número inferior a cero. Si el primer argumento debe aparecer después del segundo en el array ordenado, la función de comparación debe retornar un número mayor que cero. Si los dos valores son equivalentes (su orden es irrelevante), la función de comparación debe retornar cero. Por ejemolo, para ordenar elementos de un array de manera numérica en vez de alfabética:
+
+```js
+const arr = [33, 4, 1111, 222];
+
+arr.sort((a, b) => a - b); // => [4,33,222,1111]
+arr.sort((a, b) => b - a); // => [1111,222,33,44]
+```
+
+TODO: Ampliar
+
+#### reverse()
+
+El método `reverse()` da la vuelta al orden de un array y retorna el array dado la vuelta. No crea un nuevo array, sino que modifica el original.
+
+```js
+const arr = [1, 2, 3];
+a.reverse(); // => [3,2,1]
+```
+
+### Conversión de arrays a string
+
+TODO: Implementar
+
+### Funciones staticas de array
+
+TODO: Implementar
+
+## Arrays como objetos
+
+TODO: Implementar
+
+## Strings como arrays
+
+TODO: Implementar
